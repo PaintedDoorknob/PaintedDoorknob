@@ -15,24 +15,19 @@
       cursor: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMyIiB3aWR0aD0iMzIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMCAwaDEwMGw0MTIgMjU2TDEwMCA1MTJIMHoiLz48L3N2Zz4='), auto;
       overflow: hidden;
     }
+
     /* Header & Navigation */
     header { position: fixed; top: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.6); z-index: 10; }
     nav a { color: #ccc; margin: 0 15px; text-decoration: none; font-weight: 600; transition: color 0.3s; }
     nav a:hover { color: #00ffe7; }
+
     /* Hero Section & Animated Logo */
     .hero { position: relative; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
     .logo-svg { width: 180px; height: 180px; fill: none; stroke: #00ffe7; stroke-width: 8; stroke-linejoin: round; animation: draw 3s ease forwards; }
-    @keyframes draw {
-      from { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
-      to { stroke-dasharray: 1000; stroke-dashoffset: 0; }
-    }
-    h1 {
-      font-size: 3.5rem;
-      margin-top: 20px;
-      animation: slideDown 1s ease-out forwards;
-      opacity: 0;
-    }
+    @keyframes draw { from { stroke-dasharray: 1000; stroke-dashoffset: 1000; } to { stroke-dasharray: 1000; stroke-dashoffset: 0; } }
+    h1 { font-size: 3.5rem; margin-top: 20px; animation: slideDown 1s ease-out forwards; opacity: 0; }
     @keyframes slideDown { to { transform: translateY(0); opacity: 1; } }
+
     /* Buttons */
     .buttons { margin-top: 40px; display: flex; gap: 20px; }
     .btn {
@@ -55,24 +50,20 @@
       transform: skewX(-20deg);
       transition: all 0.5s ease;
     }
-    .btn:hover {
-      border-color: #00ffe7;
-      box-shadow: 0 0 15px #00ffe7;
-      transform: scale(1.05);
-    }
+    .btn:hover { border-color: #00ffe7; box-shadow: 0 0 15px #00ffe7; transform: scale(1.05); }
     .btn:hover::after { left: 200%; }
+
     /* Particle Overlay */
-    .particles { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgdmlld0JveD0iMCAwIDgwMCA4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNSIgc3R5bGU9ImZpbGw6I2ZmZjtlbmFibGVkOm1peGVkIHJlc2l6ZTtvcGFjaXR5OjAuMiIiLz48L3N2Zz4=') repeat;
-      opacity: 0.15;
-    }
-    /* Settings Section */
-    .settings { padding: 80px 40px; background: rgba(255,255,255,0.05); margin: 40px auto; border-radius: 15px; width: 90%; max-width: 600px; }
-    .settings h2 { text-align: center; margin-bottom: 20px; color: #00ffe7; }
-    .settings label { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
-    .toggle { position: relative; width: 50px; height: 24px; background: #444; border-radius: 12px; cursor: pointer; }
-    .toggle::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 2px; left: 2px; transition: all 0.3s; }
-    input[type=checkbox]:checked + .toggle::after { left: 28px; background: #00ffe7; }
-    input[type=checkbox] { display: none; }
+    .particles { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgdmlld0JveD0iMCAwIDgwMCA4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNSIgc3R5bGU9ImZpbGw6I2ZmZjtlbmFibGVkOm1peGVkIHJlc2l6ZTtvcGFjaXR5OjAuMiIiLz48L3N2Zz4=') repeat; opacity: 0.15; }
+
+    /* Suggestion & Bug Report Section */
+    .forms { padding: 80px 40px; background: rgba(255,255,255,0.05); margin: 40px auto; border-radius: 15px; width: 90%; max-width: 600px; }
+    .forms h2 { text-align: center; margin-bottom: 20px; color: #00ffe7; }
+    .forms label { display: block; margin: 10px 0; color: #ccc; }
+    .forms input, .forms textarea { width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; background: #222; color: #fff; border: 1px solid #444; }
+    .forms button { background: #00ffe7; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
+    .forms button:hover { background: #00c2c2; }
+
     /* Footer */
     footer { text-align: center; padding: 20px; color: #777; }
   </style>
@@ -82,7 +73,7 @@
     <div>AttemptedCode Hub</div>
     <nav>
       <a href="#home">Home</a>
-      <a href="#settings">Settings</a>
+      <a href="#forms">Suggestions & Bug Reports</a>
     </nav>
   </header>
 
@@ -99,16 +90,28 @@
     </div>
   </div>
 
-  <section class="settings" id="settings">
-    <h2>Settings</h2>
-    <label>
-      <span>Enable Sound</span>
-      <input type="checkbox" id="soundToggle"><div class="toggle"></div>
-    </label>
-    <label>
-      <span>Dark Mode</span>
-      <input type="checkbox" id="darkToggle"><div class="toggle"></div>
-    </label>
+  <!-- Suggestion & Bug Report Forms -->
+  <section class="forms" id="forms">
+    <h2>Suggest a Game or Report a Bug</h2>
+
+    <!-- Suggest Game Form -->
+    <form action="mailto:504390@bsd48.org" method="post" enctype="text/plain">
+      <label for="gameLink">Game Link (suggest a new game)</label>
+      <input type="url" id="gameLink" name="gameLink" placeholder="https://example.com" required>
+      
+      <label for="gameName">Game Name</label>
+      <input type="text" id="gameName" name="gameName" placeholder="Game Name" required>
+
+      <button type="submit">Suggest Game</button>
+    </form>
+
+    <!-- Bug Report Form -->
+    <form action="mailto:504390@bsd48.org" method="post" enctype="text/plain">
+      <label for="bugDescription">Bug Description</label>
+      <textarea id="bugDescription" name="bugDescription" rows="4" placeholder="Describe the problem" required></textarea>
+      
+      <button type="submit">Report Bug</button>
+    </form>
   </section>
 
   <footer>
