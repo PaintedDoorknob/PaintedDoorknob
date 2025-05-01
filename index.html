@@ -14,6 +14,18 @@
       font-family: 'Orbitron', sans-serif;
       cursor: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMyIiB3aWR0aD0iMzIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMCAwaDEwMGw0MTIgMjU2TDEwMCA1MTJIMHoiLz48L3N2Zz4='), auto;
       overflow: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Dark Mode */
+    body.dark-mode {
+      background-color: #0a0a0a;
+    }
+
+    /* Light Mode */
+    body.light-mode {
+      background-color: #fff;
+      color: #000;
     }
 
     /* Header & Navigation */
@@ -53,10 +65,7 @@
     .btn:hover { border-color: #00ffe7; box-shadow: 0 0 15px #00ffe7; transform: scale(1.05); }
     .btn:hover::after { left: 200%; }
 
-    /* Particle Overlay */
-    .particles { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjgwMCIgdmlld0JveD0iMCAwIDgwMCA4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNSIgc3R5bGU9ImZpbGw6I2ZmZjtlbmFibGVkOm1peGVkIHJlc2l6ZTtvcGFjaXR5OjAuMiIiLz48L3N2Zz4=') repeat; opacity: 0.15; }
-
-    /* Suggestion & Bug Report Section */
+    /* Form Section */
     .forms { padding: 80px 40px; background: rgba(255,255,255,0.05); margin: 40px auto; border-radius: 15px; width: 90%; max-width: 600px; }
     .forms h2 { text-align: center; margin-bottom: 20px; color: #00ffe7; }
     .forms label { display: block; margin: 10px 0; color: #ccc; }
@@ -64,11 +73,29 @@
     .forms button { background: #00ffe7; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
     .forms button:hover { background: #00c2c2; }
 
-    /* Footer */
-    footer { text-align: center; padding: 20px; color: #777; }
+    /* Settings Panel */
+    .settings-panel {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      color: #fff;
+    }
+    .settings-panel button {
+      background: #00ffe7;
+      border: none;
+      padding: 8px 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      color: #000;
+    }
   </style>
 </head>
-<body>
+<body class="dark-mode">
+
   <header>
     <div>AttemptedCode Hub</div>
     <nav>
@@ -76,8 +103,6 @@
       <a href="#forms">Suggestions & Bug Reports</a>
     </nav>
   </header>
-
-  <div class="particles"></div>
 
   <div class="hero" id="home">
     <svg class="logo-svg" viewBox="0 0 100 100">
@@ -95,7 +120,7 @@
     <h2>Suggest a Game or Report a Bug</h2>
 
     <!-- Suggest Game Form -->
-    <form action="mailto:504390@bsd48.org" method="post" enctype="text/plain">
+    <form id="gameSuggestionForm">
       <label for="gameLink">Game Link (suggest a new game)</label>
       <input type="url" id="gameLink" name="gameLink" placeholder="https://example.com" required>
       
@@ -106,7 +131,7 @@
     </form>
 
     <!-- Bug Report Form -->
-    <form action="mailto:504390@bsd48.org" method="post" enctype="text/plain">
+    <form id="bugReportForm">
       <label for="bugDescription">Bug Description</label>
       <textarea id="bugDescription" name="bugDescription" rows="4" placeholder="Describe the problem" required></textarea>
       
@@ -114,9 +139,61 @@
     </form>
   </section>
 
+  <!-- Settings Panel -->
+  <div class="settings-panel">
+    <button id="toggleDarkMode">Toggle Dark Mode</button>
+    <button id="toggleSound">Toggle Sound</button>
+  </div>
+
   <footer>
     &copy; 2025 AttemptedCode Hub — All Rights Reserved
   </footer>
 
+  <script>
+    // Dark Mode and Light Mode Toggle
+    document.getElementById('toggleDarkMode').addEventListener('click', () => {
+      const body = document.body;
+      body.classList.toggle('dark-mode');
+      body.classList.toggle('light-mode');
+    });
+
+    // Sound Toggle (for now just logs, replace with actual audio logic)
+    document.getElementById('toggleSound').addEventListener('click', () => {
+      const isSoundOn = localStorage.getItem('sound') !== 'off';
+      localStorage.setItem('sound', isSoundOn ? 'off' : 'on');
+      alert(`Sound is now ${isSoundOn ? 'OFF' : 'ON'}`);
+    });
+
+    // Submit the Suggestion Form
+    document.getElementById('gameSuggestionForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const gameLink = document.getElementById('gameLink').value;
+      const gameName = document.getElementById('gameName').value;
+      
+      // Send the suggestion to your backend (placeholder)
+      fetch('/submit-suggestion', {
+        method: 'POST',
+        body: JSON.stringify({ gameLink, gameName }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(response => alert('Game suggestion sent!'));
+    });
+
+    // Submit the Bug Report Form
+    document.getElementById('bugReportForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const bugDescription = document.getElementById('bugDescription').value;
+      
+      // Send the bug report to your backend (placeholder)
+      fetch('/submit-bug', {
+        method: 'POST',
+        body: JSON.stringify({ bugDescription }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(response => alert('Bug report sent!'));
+    });
+  </script>
 </body>
 </html>
