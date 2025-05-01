@@ -19,7 +19,19 @@
     .container {
       text-align: center;
       padding-top: 100px;
-      backdrop-filter: brightness(1.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-behind {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      opacity: 0.1;
+      z-index: 0;
+      filter: drop-shadow(0 0 25px #00ffe7);
     }
 
     h2 {
@@ -29,6 +41,8 @@
       transform: translateY(-50px);
       text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9);
       letter-spacing: 2px;
+      z-index: 2;
+      position: relative;
     }
 
     @keyframes slideDown {
@@ -64,7 +78,11 @@
 </head>
 <body>
   <div class="container">
+    <!-- Gamey glowing logo behind the title -->
+    <img class="logo-behind" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Controller_white.svg/512px-Controller_white.svg.png" alt="logo">
+    
     <h2>AttemptedCode</h2>
+
     <div class="button-container">
       <button onclick="window.location.href='https://sd592g.github.io/zj684od4lfg/'">Click here for EaglerCraft</button>
       <button onclick="window.location.href='https://www.hoodamath.com/games/snowrider3d.html#gsc.tab=0'">Click for SnowRider</button>
