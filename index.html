@@ -2,10 +2,27 @@
 <html>
 <head>
   <style>
-    .slide-down {
-      animation: slideDown 0.6s ease-out forwards;
+    body {
+      background-image: url('https://example.com/your-gaming-background.jpg'); /* Replace with your gaming background URL */
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      text-align: center;
+      padding: 50px;
+      color: white;
+    }
+
+    h2 {
+      animation: slideDown 1s ease-out forwards;
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-30px);
+      font-size: 2.5em;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
     }
 
     @keyframes slideDown {
@@ -14,15 +31,41 @@
         transform: translateY(0);
       }
     }
+
+    .button-container {
+      margin-top: 30px;
+    }
+
+    button {
+      background-color: #4CAF50; /* Green button */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1.2em;
+      margin: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049; /* Slightly darker green when hovered */
+    }
+
+    button:active {
+      background-color: #397c39; /* Even darker when clicked */
+    }
   </style>
 </head>
 <body>
 
-<div style="width: 300px; height: 150px; overflow: scroll; border: 1px solid gray; padding: 10px;">
-  <h2 class="slide-down">AttemptedCode</h2>
-  <button onclick="window.location.href='https://sd592g.github.io/zj684od4lfg/'">Click here for EaglerCraft</button>
-  <button onclick="window.location.href='https://www.hoodamath.com/games/snowrider3d.html#gsc.tab=0'">Click for SnowRider</button>
+<div class="container">
+  <h2>AttemptedCode</h2>
+  <div class="button-container">
+    <button onclick="window.location.href='https://sd592g.github.io/zj684od4lfg/'">Click here for EaglerCraft</button>
+    <button onclick="window.location.href='https://www.hoodamath.com/games/snowrider3d.html#gsc.tab=0'">Click for SnowRider</button>
+  </div>
 </div>
-
-</body>
-</html>
