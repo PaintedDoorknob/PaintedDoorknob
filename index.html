@@ -10,15 +10,16 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      color: white;
+      color: #fff;
     }
 
     .container {
       text-align: center;
       padding-top: 100px;
+      backdrop-filter: brightness(1.1);
     }
 
     h2 {
@@ -26,7 +27,8 @@
       animation: slideDown 1s ease-out forwards;
       opacity: 0;
       transform: translateY(-50px);
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9);
+      letter-spacing: 2px;
     }
 
     @keyframes slideDown {
@@ -41,19 +43,22 @@
     }
 
     button {
-      background-color: #4CAF50;
-      border: none;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 2px solid transparent;
       color: white;
       padding: 15px 30px;
       font-size: 1.2em;
       margin: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     button:hover {
-      background-color: #3e9445;
+      border-color: #00ffe7;
+      background-color: rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 15px #00ffe7, 0 0 30px #00ffe7;
     }
   </style>
 </head>
