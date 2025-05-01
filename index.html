@@ -1,92 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AttemptedCode</title>
+  <meta charset="UTF-8">
+  <title>Game Hub</title>
   <style>
     body {
-      background-image: url('https://drive.google.com/uc?export=view&id=1Z4evBsUOzlXWSKd0Oj25KJsPHCXu_Viv');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0f0f0f;
       color: #fff;
+      overflow-x: hidden;
     }
 
-    .container {
-      text-align: center;
-      padding-top: 100px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .logo-behind {
+    /* Animated logo background behind the title */
+    .logo-background {
       position: absolute;
-      top: 30px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       width: 200px;
-      opacity: 0.1;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,0,80,0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
       z-index: 0;
-      filter: drop-shadow(0 0 25px #00ffe7);
+    }
+
+    @keyframes pulse {
+      0% { transform: translateX(-50%) scale(1); opacity: 0.4; }
+      50% { transform: translateX(-50%) scale(1.2); opacity: 0.6; }
+      100% { transform: translateX(-50%) scale(1); opacity: 0.4; }
     }
 
     h2 {
-      font-size: 3em;
+      font-size: 2.5rem;
+      text-align: center;
+      margin-top: 100px;
+      z-index: 1;
+      position: relative;
       animation: slideDown 1s ease-out forwards;
       opacity: 0;
-      transform: translateY(-50px);
-      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9);
-      letter-spacing: 2px;
-      z-index: 2;
-      position: relative;
     }
 
     @keyframes slideDown {
-      to {
-        opacity: 1;
+      0% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      100% {
         transform: translateY(0);
+        opacity: 1;
       }
     }
 
     .button-container {
-      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-top: 50px;
+      z-index: 1;
+      position: relative;
     }
 
     button {
-      background-color: rgba(0, 0, 0, 0.7);
-      border: 2px solid transparent;
+      background-color: #1e1e2f;
+      border: 2px solid #444;
       color: white;
-      padding: 15px 30px;
-      font-size: 1.2em;
-      margin: 10px;
+      padding: 15px 25px;
+      font-size: 1rem;
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 0 transparent;
     }
 
     button:hover {
-      border-color: #00ffe7;
-      background-color: rgba(0, 0, 0, 0.9);
-      box-shadow: 0 0 15px #00ffe7, 0 0 30px #00ffe7;
+      border-color: #ff007f;
+      box-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f;
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Gamey glowing logo behind the title -->
-    <img class="logo-behind" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Controller_white.svg/512px-Controller_white.svg.png" alt="logo">
-    
-    <h2>AttemptedCode</h2>
 
-    <div class="button-container">
-      <button onclick="window.location.href='https://sd592g.github.io/zj684od4lfg/'">Click here for EaglerCraft</button>
-      <button onclick="window.location.href='https://www.hoodamath.com/games/snowrider3d.html#gsc.tab=0'">Click for SnowRider</button>
-    </div>
+  <div class="logo-background"></div>
+
+  <h2>AttemptedCode</h2>
+
+  <div class="button-container">
+    <button onclick="window.location.href='https://sd592g.github.io/zj684od4lfg/'">Click here for EaglerCraft</button>
+    <button onclick="window.location.href='https://www.hoodamath.com/games/snowrider3d.html'">Click for SnowRider</button>
   </div>
+
 </body>
 </html>
