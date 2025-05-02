@@ -1,199 +1,318 @@
+// package.json
+{
+  "name": "painteddoorknob-forum",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.7.0",
+    "express-session": "^1.17.3",
+    "connect-mongo": "^4.6.0",
+    "bcrypt": "^5.1.0",
+    "ejs": "^3.1.8",
+    "body-parser": "^1.20.1",
+    "openai": "^3.0.0"
+  }
+}
+
+// server.js
+const express = require('express');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const path = require('path');
+const authRoutes = require('./routes/auth');
+const postRoutes = require('./routes/posts');
+const chatbotRoutes = require('./routes/chatbot');
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/painteddoorknob', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+const app = express();
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Session setup
+app.use(session({
+  secret: 'painteddoorknob_secret',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/painteddoorknob' })
+}));
+
+// Make user available in templates
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.userId;
+  next();
+});
+
+// Routes
+app.get('/', (req, res) => res.redirect('/posts'));
+app.use('/', authRoutes);
+app.use('/posts', postRoutes);
+app.use('/chatbot', chatbotRoutes);
+
+// 404
+app.use((req, res) => res.status(404).render('layout', { title:'404', body: '<h2>Page Not Found</h2>' }));
+
+// Start server
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+
+
+// models/User.js
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const UserSchema = new mongoose.Schema({
+  username: { type: String, unique: true },
+  password: String
+});
+UserSchema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+UserSchema.methods.validatePassword = function(pass) {
+  return bcrypt.compare(pass, this.password);
+};
+module.exports = mongoose.model('User', UserSchema);
+
+
+// models/Post.js
+const mongoose2 = require('mongoose');
+const PostSchema = new mongoose2.Schema({
+  title: String,
+  body: String,
+  author: { type: mongoose2.Schema.Types.ObjectId, ref: 'User' },
+  comments: [{
+    body: String,
+    author: { type: mongoose2.Schema.Types.ObjectId, ref: 'User' },
+    createdAt: Date
+  }],
+  createdAt: { type: Date, default: Date.now }
+});
+module.exports = mongoose2.model('Post', PostSchema);
+
+
+// routes/auth.js
+const express2 = require('express');
+const User = require('../models/User');
+const routerAuth = express2.Router();
+
+routerAuth.get('/signup', (req, res) => res.render('signup', { title:'Sign Up' }));
+routerAuth.post('/signup', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = new User({ username, password });
+    await user.save();
+    req.session.userId = user._id;
+    res.redirect('/posts');
+  } catch (err) {
+    res.redirect('/signup');
+  }
+});
+routerAuth.get('/login', (req, res) => res.render('login', { title:'Login' }));
+routerAuth.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username });
+  if (user && await user.validatePassword(password)) {
+    req.session.userId = user._id;
+    return res.redirect('/posts');
+  }
+  res.redirect('/login');
+});
+routerAuth.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/login');
+});
+module.exports = routerAuth;
+
+
+// routes/posts.js
+const express3 = require('express');
+const Post = require('../models/Post');
+const routerPosts = express3.Router();
+
+function ensureAuth(req, res, next) {
+  if (req.session.userId) return next();
+  res.redirect('/login');
+}
+
+routerPosts.get('/', async (req, res) => {
+  const posts = await Post.find()
+    .populate('author','username')
+    .populate('comments.author','username');
+  res.render('posts', { title:'Posts', posts });
+});
+routerPosts.get('/new', ensureAuth, (req, res) => res.render('new_post', { title:'New Post' }));
+routerPosts.post('/', ensureAuth, async (req, res) => {
+  await new Post({
+    title: req.body.title,
+    body: req.body.body,
+    author: req.session.userId
+  }).save();
+  res.redirect('/posts');
+});
+routerPosts.post('/:id/comments', ensureAuth, async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  post.comments.push({
+    body: req.body.comment,
+    author: req.session.userId,
+    createdAt: new Date()
+  });
+  await post.save();
+  res.redirect('/posts');
+});
+module.exports = routerPosts;
+
+
+// routes/chatbot.js
+const express4 = require('express');
+const { Configuration, OpenAIApi } = require('openai');
+const routerChat = express4.Router();
+const config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAIApi(config);
+
+routerChat.get('/', (req, res) => res.render('chatbot', { title:'AI Chatbot' }));
+routerChat.post('/', async (req, res) => {
+  const userMessage = req.body.message;
+  const response = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role:'user', content:userMessage }]
+  });
+  res.json({ reply: response.data.choices[0].message.content });
+});
+module.exports = routerChat;
+
+
+// views/layout.ejs
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PaintedDoorknob's Website</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
-  <style>
-    /* Global Reset & Cursor */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0a0a0a;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      cursor: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMyIiB3aWR0aD0iMzIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMCAwaDEwMGw0MTIgMjU2TDEwMCA1MTJIMHoiLz48L3N2Zz4='), auto;
-      overflow: hidden;
-      transition: background-color 0.3s ease;
-    }
-
-    /* Dark Mode */
-    body.dark-mode {
-      background-color: #0a0a0a;
-    }
-
-    /* Light Mode */
-    body.light-mode {
-      background-color: #fff;
-      color: #000;
-    }
-
-    /* Header & Navigation */
-    header { position: fixed; top: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.6); z-index: 10; }
-    nav a { color: #ccc; margin: 0 15px; text-decoration: none; font-weight: 600; transition: color 0.3s; }
-    nav a:hover { color: #00ffe7; }
-
-    /* Hero Section & Animated Logo */
-    .hero { position: relative; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    .logo-svg { width: 180px; height: 180px; fill: none; stroke: #00ffe7; stroke-width: 8; stroke-linejoin: round; animation: draw 3s ease forwards; }
-    @keyframes draw { from { stroke-dasharray: 1000; stroke-dashoffset: 1000; } to { stroke-dasharray: 1000; stroke-dashoffset: 0; } }
-    h1 { font-size: 3.5rem; margin-top: 20px; animation: slideDown 1s ease-out forwards; opacity: 0; }
-    @keyframes slideDown { to { transform: translateY(0); opacity: 1; } }
-
-    /* Buttons */
-    .buttons { margin-top: 40px; display: flex; gap: 20px; }
-    .btn {
-      background: rgba(30,30,47,0.8);
-      border: 2px solid #444;
-      padding: 16px 32px;
-      font-size: 1rem;
-      border-radius: 12px;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn::after {
-      content: '';
-      position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: rgba(0,255,231,0.2);
-      transform: skewX(-20deg);
-      transition: all 0.5s ease;
-    }
-    .btn:hover { border-color: #00ffe7; box-shadow: 0 0 15px #00ffe7; transform: scale(1.05); }
-    .btn:hover::after { left: 200%; }
-
-    /* Form Section */
-    .forms { padding: 80px 40px; background: rgba(255,255,255,0.05); margin: 40px auto; border-radius: 15px; width: 90%; max-width: 600px; }
-    .forms h2 { text-align: center; margin-bottom: 20px; color: #00ffe7; }
-    .forms label { display: block; margin: 10px 0; color: #ccc; }
-    .forms input, .forms textarea { width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; background: #222; color: #fff; border: 1px solid #444; }
-    .forms button { background: #00ffe7; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
-    .forms button:hover { background: #00c2c2; }
-
-    /* Settings Panel */
-    .settings-panel {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 10px;
-      color: #fff;
-    }
-    .settings-panel button {
-      background: #00ffe7;
-      border: none;
-      padding: 8px 16px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      color: #000;
-    }
-  </style>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="dark-mode">
-
+<body>
   <header>
-    <div>PaintedDoorknob Website</div>
     <nav>
-      <a href="#home">Home</a>
-      <a href="#forms">Suggestions & Bug Reports</a>
+      <a href="/posts">Home</a> |
+      <a href="/chatbot">Chatbot</a> |
+      <% if (!currentUser) { %>
+        <a href="/login">Login</a> |
+        <a href="/signup">Sign Up</a>
+      <% } else { %>
+        <a href="/logout">Logout</a>
+      <% } %>
     </nav>
   </header>
-
-  <div class="hero" id="home">
-    <svg class="logo-svg" viewBox="0 0 100 100">
-      <path d="M10,50 L90,50 M50,10 L50,90" />
-    </svg>
-    <h1>PaintedDoorknob</h1>
-    <div class="buttons">
-      <button class="btn" onclick="window.location.href='https://sd592g.github.io/zj684od4lfg/'">EaglerCraft</button>
-      <button class="btn" onclick="window.location.href='https://www.hoodamath.com/games/snowrider3d.html'">SnowRider</button>
-    </div>
-  </div>
-
-  <!-- Suggestion & Bug Report Forms -->
-  <section class="forms" id="forms">
-    <h2>Suggest a Game or Report a Bug</h2>
-
-    <!-- Suggest Game Form -->
-    <form id="gameSuggestionForm">
-      <label for="gameLink">Game Link (suggest a new game)</label>
-      <input type="url" id="gameLink" name="gameLink" placeholder="https://example.com" required>
-      
-      <label for="gameName">Game Name</label>
-      <input type="text" id="gameName" name="gameName" placeholder="Game Name" required>
-
-      <button type="submit">Suggest Game</button>
-    </form>
-
-    <!-- Bug Report Form -->
-    <form id="bugReportForm">
-      <label for="bugDescription">Bug Description</label>
-      <textarea id="bugDescription" name="bugDescription" rows="4" placeholder="Describe the problem" required></textarea>
-      
-      <button type="submit">Report Bug</button>
-    </form>
-  </section>
-
-  <!-- Settings Panel -->
-  <div class="settings-panel">
-    <button id="toggleDarkMode">Toggle Dark Mode</button>
-    <button id="toggleSound">Toggle Sound</button>
-  </div>
-
-  <footer>
-    &copy; 2025 PaintedDoorknob Website — All Rights Reserved
-  </footer>
-
-  <script>
-    // Dark Mode and Light Mode Toggle
-    document.getElementById('toggleDarkMode').addEventListener('click', () => {
-      const body = document.body;
-      body.classList.toggle('dark-mode');
-      body.classList.toggle('light-mode');
-    });
-
-    // Sound Toggle (for now just logs, replace with actual audio logic)
-    document.getElementById('toggleSound').addEventListener('click', () => {
-      const isSoundOn = localStorage.getItem('sound') !== 'off';
-      localStorage.setItem('sound', isSoundOn ? 'off' : 'on');
-      alert(`Sound is now ${isSoundOn ? 'OFF' : 'ON'}`);
-    });
-
-    // Submit the Suggestion Form
-    document.getElementById('gameSuggestionForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const gameLink = document.getElementById('gameLink').value;
-      const gameName = document.getElementById('gameName').value;
-      
-      // Send the suggestion to your backend (placeholder)
-      fetch('/submit-suggestion', {
-        method: 'POST',
-        body: JSON.stringify({ gameLink, gameName }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(response => alert('Game suggestion sent!'));
-    });
-
-    // Submit the Bug Report Form
-    document.getElementById('bugReportForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const bugDescription = document.getElementById('bugDescription').value;
-      
-      // Send the bug report to your backend (placeholder)
-      fetch('/submit-bug', {
-        method: 'POST',
-        body: JSON.stringify({ bugDescription }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then(response => alert('Bug report sent!'));
-    });
-  </script>
+  <main><%= body %></main>
 </body>
 </html>
+
+
+// views/signup.ejs
+<% include('layout', { title:'Sign Up', body:`
+  <h2>Sign Up</h2>
+  <form method="POST" action="/signup">
+    <input name="username" placeholder="Username" required />
+    <input name="password" type="password" placeholder="Password" required />
+    <button type="submit">Sign Up</button>
+  </form>
+` }) %>
+
+
+// views/login.ejs
+<% include('layout', { title:'Login', body:`
+  <h2>Login</h2>
+  <form method="POST" action="/login">
+    <input name="username" placeholder="Username" required />
+    <input name="password" type="password" placeholder="Password" required />
+    <button type="submit">Login</button>
+  </form>
+` }) %>
+
+
+// views/posts.ejs
+<% include('layout', { title:'Posts', body:`
+  <h2>All Posts</h2>
+  <a href="/posts/new">New Post</a>
+  ${posts.map(p=>`
+    <article>
+      <h3>${p.title}</h3>
+      <p>by ${p.author.username} at ${new Date(p.createdAt).toLocaleString()}</p>
+      <div>${p.body}</div>
+      <h4>Comments</h4>
+      ${p.comments.map(c=>`<p><b>${c.author.username}:</b> ${c.body}</p>`).join('')}
+      ${currentUser?`
+      <form method="POST" action="/posts/${p._id}/comments">
+        <input name="comment" placeholder="Comment..." required />
+        <button type="submit">Add Comment</button>
+      </form>`:''}
+    </article>
+  `).join('')}
+` }) %>
+
+
+// views/new_post.ejs
+<% include('layout', { title:'New Post', body:`
+  <h2>New Post</h2>
+  <form method="POST" action="/posts">
+    <input name="title" placeholder="Title" required />
+    <textarea name="body" rows="5" placeholder="Content..." required></textarea>
+    <button type="submit">Create</button>
+  </form>
+` }) %>
+
+
+// views/chatbot.ejs
+<% include('layout', { title:'AI Chatbot', body:`
+  <h2>AI Chatbot</h2>
+  <textarea id="chatInput" placeholder="Ask me anything..." rows="3"></textarea>
+  <button id="sendChat">Send</button>
+  <pre id="chatOutput" style="background:#222;color:#0f0;"></pre>
+  <script>
+    document.getElementById('sendChat').onclick = async () => {
+      const msg = document.getElementById('chatInput').value;
+      const res = await fetch('/chatbot', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ message: msg })
+      });
+      const data = await res.json();
+      document.getElementById('chatOutput').textContent +=
+        `You: ${msg}\\nAI: ${data.reply}\\n`;
+    };
+  </script>
+` }) %>
+
+
+// public/css/style.css
+body {
+  margin:0; padding:0;
+  background:#0f0f0f; color:#eee;
+  font-family:Arial, sans-serif;
+}
+header { background:#111; padding:10px; }
+nav a { color:#ccc; margin-right:10px; text-decoration:none; }
+nav a:hover { color:#fff; }
+main { padding:20px; max-width:800px; margin:auto; }
+form input, form textarea, form button {
+  display:block; width:100%; margin-bottom:10px; padding:8px;
+}
+article {
+  background:#222; padding:15px; margin-bottom:20px; border-radius:8px;
+}
+h3 { margin-top:0; }
+button {
+  background:#00aaff; color:#fff; border:none; cursor:pointer;
+}
+button:hover { background:#0088cc; }
