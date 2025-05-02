@@ -1,80 +1,33 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const signupForm = document.getElementById('signupForm');
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault(); // Prevent the default form submission
 
-  // Handle form submission
-  signupForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from reloading the page
+  // Grab the email and password values
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-    // Get the input values
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const confirmPassword = document.getElementById('confirmPassword').value.trim();
-
-    // Validation
-    if (!name || !email || !password || !confirmPassword) {
-      alert("Please fill out all fields.");
-      return;
+  // Send login request to the server
+  fetch('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // If login is successful, hide the login form and show the account page or redirect
+      // Option 1: Hide the login form
+      document.querySelector('.login-container').style.display = 'none';
+      
+      // Option 2: Redirect to the account page (e.g., 'profile.html' or 'dashboard.html')
+      window.location.href = '/profile'; // Redirect to the profile page after successful login
+    } else {
+      alert(data.message); // Show error message
     }
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-
-    // Here, you would send the data to a backend (or EmailJS for now)
-    sendSignupData(name, email, password);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred. Please try again.');
   });
-
-  // Validate email format
-  function validateEmail(email) {
-    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return regex.test(email);
-  }
-
-  // Send data to backend (or EmailJS for notifications)
-  function sendSignupData(name, email, password) {
-    const userData = {
-      name,
-      email,
-      password
-    };
-
-    // This is where EmailJS can be used or you can make a backend request
-    // Here’s an example of how to use EmailJS for notifications:
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', userData)
-      .then((response) => {
-        alert('Sign up successful!');
-        window.location.href = 'login.html'; // Redirect to login page
-      }, (error) => {
-        alert('Error in sending email. Please try again.');
-      });
-  }
 });
-3. EmailJS Integration
-If you're using EmailJS to send an email after a successful sign-up, you need to:
-
-Sign up for EmailJS and get your Service ID, Template ID, and Public Key.
-
-In auth.js, replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with the actual IDs from EmailJS.
-
-For example:
-
-javascript
-Copy
-Edit
-emailjs.send('service_XXXXXX', 'template_XXXXXX', userData)
-You’ll also need to make sure the EmailJS SDK is included in your project. You can do this by adding the following to your HTML’s <head>:
-
-html
-Copy
-Edit
-<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-  emailjs.init("YOUR_PUBLIC_KEY");  // Replace with your public key
-</script>
