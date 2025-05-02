@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log In | PaintedDoorKnob</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/login.js" defer></script> <!-- Add this line to include login.js -->
+  <script src="js/auth.js" defer></script>
 </head>
 <body>
   <header>
@@ -24,18 +24,20 @@
   </header>
 
   <main>
-    <section class="login-form">
-      <h2>Log In</h2>
-      <form id="loginForm">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="Enter your email">
+    <section class="login-container">
+      <div class="login-form">
+        <h2>Log In</h2>
+        <form id="loginForm">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email">
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
 
-        <button type="submit" class="cta-button">Log In</button>
-      </form>
-      <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+          <button type="submit" class="cta-button">Log In</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+      </div>
     </section>
   </main>
 
