@@ -1,318 +1,82 @@
-// package.json
-{
-  "name": "painteddoorknob-forum",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^6.7.0",
-    "express-session": "^1.17.3",
-    "connect-mongo": "^4.6.0",
-    "bcrypt": "^5.1.0",
-    "ejs": "^3.1.8",
-    "body-parser": "^1.20.1",
-    "openai": "^3.0.0"
-  }
+/* ------------------ HEADER ------------------ */
+.site-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; position: fixed; top: 0; width: 100%; background: rgba(18,18,18,0.9); z-index: 1000; }
+.site-header.light-mode { background: rgba(245,245,245,0.9); }
+.logo { height: 48px; }
+.nav { display: flex; gap: 16px; }
+.nav__link { padding: 8px 12px; border-radius: var(--radius); transition: background var(--transition), color var(--transition); }
+.nav__link:hover, .nav__link.active { background: var(--primary); color: var(--txt-dark); }
+#themeToggle { background: transparent; border: 2px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: var(--radius); cursor: pointer; transition: background var(--transition), color var(--transition); }
+#themeToggle:hover { background: var(--primary); color: var(--txt-dark); }
+
+/* ------------------ SECTIONS ------------------ */
+section { padding: 100px 32px 64px; }
+.hidden { display: none; }
+
+/* ----- HERO ----- */
+#home { text-align: center; background: url('images/hero-bg.jpg') center/cover no-repeat; color: var(--txt-light); }
+#home h1 { font-size: 3rem; margin-bottom: 16px; }
+#home p { font-size: 1.2rem; margin-bottom: 24px; }
+.btn--primary { background: var(--primary); color: var(--txt-dark); padding: 12px 24px; border: none; border-radius: var(--radius); cursor: pointer; transition: transform var(--transition); }
+.btn--primary:hover { transform: scale(1.05); }
+
+/* ----- ABOUT ----- */
+#about h2 { text-align: center; color: var(--primary); margin-bottom: 32px; }
+.about__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 24px; }
+.about__item { background: var(--secondary); padding: 24px; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.about__item h3 { margin-bottom: 12px; }
+
+/* ----- FORUM ----- */
+#forum { display: flex; }
+.sidebar { width: 220px; position: sticky; top: 80px; background: var(--secondary); padding: 16px; border-radius: var(--radius); height: max-content; }
+.categories { list-style: none; margin-top: 24px; }
+.categories li { margin-bottom: 12px; }
+.categories li a { padding: 6px 8px; display: block; border-radius: var(--radius); transition: background var(--transition); }
+.categories li a:hover { background: var(--primary); color: var(--txt-dark); }
+.forum__feed { flex:1; margin-left: 32px; display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 24px; }
+.post-card { background: var(--secondary); padding: 16px; border-radius: var(--radius); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: space-between; }
+.post-card__title { margin-bottom: 8px; font-size: 1.2rem; }
+.post-card__meta { margin-bottom: 12px; color: #aaa; font-size: 0.9rem; }
+.post-card__excerpt { flex:1; margin-bottom: 12px; }
+.post-card__footer { display: flex; justify-content: space-between; align-items: center; }
+.btn--link { background: transparent; color: var(--primary); }
+
+/* ----- NEW POST ----- */
+#new-post h2 { margin-bottom: 24px; }
+.form { max-width:600px; margin:auto; display:flex; flex-direction:column; gap:12px; }
+.form input, .form textarea { padding:12px; border-radius: var(--radius); border:1px solid #333; background: var(--secondary); color: var(--txt-light); }
+.form button { align-self:flex-start; }
+
+/* ----- POST VIEW ----- */
+#post-view { max-width:800px; margin:auto; }
+#post-view h2 { margin-bottom: 8px; }
+#post-view .meta { margin-bottom:16px; color:#aaa; }
+#post-view .content { line-height:1.6; margin-bottom:24px; }
+#post-view .comments { margin-top:32px; }
+.comment { background: var(--secondary); padding: 12px; border-radius: var(--radius); margin-bottom:12px; }
+
+/* ----- CHATBOT ----- */
+#chatbot { max-width:600px; margin:auto; }
+.chat-window { background: var(--secondary); height:300px; overflow-y:auto; padding:12px; border-radius: var(--radius); margin-bottom:12px; }
+.chat-window p { margin-bottom:8px; }
+
+/* ----- AUTH ----- */
+.auth-page .auth-form { max-width:400px; margin:160px auto 0; display:flex; flex-direction:column; gap:12px; }
+.auth-form input { padding:12px; border-radius: var(--radius); border:1px solid #333; background: var(--secondary); color: var(--txt-light); }
+.auth-form button { align-self:flex-start; }
+
+/* ----- FOOTER ----- */
+.site-footer { text-align:center; padding:32px 0; color:#777; }
+
+/* ----- NOTIFICATIONS ----- */
+.notification-container { position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:8px; z-index:2000; }
+.notification { background: var(--primary); color: var(--txt-dark); padding:12px 20px; border-radius: var(--radius); animation: fadeInOut 4s forwards; }
+@keyframes fadeInOut { 0%,100%{opacity:0;} 10%,90%{opacity:1;} }
+
+/* ----- RESPONSIVE ----- */
+@media(max-width:768px){
+  .site-header { flex-direction:column; gap:12px; }
+  #forum { flex-direction:column; }
+  .sidebar { position:relative; width:100%; margin-bottom:24px; }
+  .forum__feed { margin-left:0; }
 }
-
-// server.js
-const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const path = require('path');
-const authRoutes = require('./routes/auth');
-const postRoutes = require('./routes/posts');
-const chatbotRoutes = require('./routes/chatbot');
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/painteddoorknob', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-const app = express();
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// Session setup
-app.use(session({
-  secret: 'painteddoorknob_secret',
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/painteddoorknob' })
-}));
-
-// Make user available in templates
-app.use((req, res, next) => {
-  res.locals.currentUser = req.session.userId;
-  next();
-});
-
-// Routes
-app.get('/', (req, res) => res.redirect('/posts'));
-app.use('/', authRoutes);
-app.use('/posts', postRoutes);
-app.use('/chatbot', chatbotRoutes);
-
-// 404
-app.use((req, res) => res.status(404).render('layout', { title:'404', body: '<h2>Page Not Found</h2>' }));
-
-// Start server
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-
-
-// models/User.js
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const UserSchema = new mongoose.Schema({
-  username: { type: String, unique: true },
-  password: String
-});
-UserSchema.pre('save', async function(next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  next();
-});
-UserSchema.methods.validatePassword = function(pass) {
-  return bcrypt.compare(pass, this.password);
-};
-module.exports = mongoose.model('User', UserSchema);
-
-
-// models/Post.js
-const mongoose2 = require('mongoose');
-const PostSchema = new mongoose2.Schema({
-  title: String,
-  body: String,
-  author: { type: mongoose2.Schema.Types.ObjectId, ref: 'User' },
-  comments: [{
-    body: String,
-    author: { type: mongoose2.Schema.Types.ObjectId, ref: 'User' },
-    createdAt: Date
-  }],
-  createdAt: { type: Date, default: Date.now }
-});
-module.exports = mongoose2.model('Post', PostSchema);
-
-
-// routes/auth.js
-const express2 = require('express');
-const User = require('../models/User');
-const routerAuth = express2.Router();
-
-routerAuth.get('/signup', (req, res) => res.render('signup', { title:'Sign Up' }));
-routerAuth.post('/signup', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = new User({ username, password });
-    await user.save();
-    req.session.userId = user._id;
-    res.redirect('/posts');
-  } catch (err) {
-    res.redirect('/signup');
-  }
-});
-routerAuth.get('/login', (req, res) => res.render('login', { title:'Login' }));
-routerAuth.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  if (user && await user.validatePassword(password)) {
-    req.session.userId = user._id;
-    return res.redirect('/posts');
-  }
-  res.redirect('/login');
-});
-routerAuth.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/login');
-});
-module.exports = routerAuth;
-
-
-// routes/posts.js
-const express3 = require('express');
-const Post = require('../models/Post');
-const routerPosts = express3.Router();
-
-function ensureAuth(req, res, next) {
-  if (req.session.userId) return next();
-  res.redirect('/login');
-}
-
-routerPosts.get('/', async (req, res) => {
-  const posts = await Post.find()
-    .populate('author','username')
-    .populate('comments.author','username');
-  res.render('posts', { title:'Posts', posts });
-});
-routerPosts.get('/new', ensureAuth, (req, res) => res.render('new_post', { title:'New Post' }));
-routerPosts.post('/', ensureAuth, async (req, res) => {
-  await new Post({
-    title: req.body.title,
-    body: req.body.body,
-    author: req.session.userId
-  }).save();
-  res.redirect('/posts');
-});
-routerPosts.post('/:id/comments', ensureAuth, async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  post.comments.push({
-    body: req.body.comment,
-    author: req.session.userId,
-    createdAt: new Date()
-  });
-  await post.save();
-  res.redirect('/posts');
-});
-module.exports = routerPosts;
-
-
-// routes/chatbot.js
-const express4 = require('express');
-const { Configuration, OpenAIApi } = require('openai');
-const routerChat = express4.Router();
-const config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-const openai = new OpenAIApi(config);
-
-routerChat.get('/', (req, res) => res.render('chatbot', { title:'AI Chatbot' }));
-routerChat.post('/', async (req, res) => {
-  const userMessage = req.body.message;
-  const response = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: [{ role:'user', content:userMessage }]
-  });
-  res.json({ reply: response.data.choices[0].message.content });
-});
-module.exports = routerChat;
-
-
-// views/layout.ejs
-<!DOCTYPE html>
-<html>
-<head>
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="/posts">Home</a> |
-      <a href="/chatbot">Chatbot</a> |
-      <% if (!currentUser) { %>
-        <a href="/login">Login</a> |
-        <a href="/signup">Sign Up</a>
-      <% } else { %>
-        <a href="/logout">Logout</a>
-      <% } %>
-    </nav>
-  </header>
-  <main><%= body %></main>
-</body>
-</html>
-
-
-// views/signup.ejs
-<% include('layout', { title:'Sign Up', body:`
-  <h2>Sign Up</h2>
-  <form method="POST" action="/signup">
-    <input name="username" placeholder="Username" required />
-    <input name="password" type="password" placeholder="Password" required />
-    <button type="submit">Sign Up</button>
-  </form>
-` }) %>
-
-
-// views/login.ejs
-<% include('layout', { title:'Login', body:`
-  <h2>Login</h2>
-  <form method="POST" action="/login">
-    <input name="username" placeholder="Username" required />
-    <input name="password" type="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-  </form>
-` }) %>
-
-
-// views/posts.ejs
-<% include('layout', { title:'Posts', body:`
-  <h2>All Posts</h2>
-  <a href="/posts/new">New Post</a>
-  ${posts.map(p=>`
-    <article>
-      <h3>${p.title}</h3>
-      <p>by ${p.author.username} at ${new Date(p.createdAt).toLocaleString()}</p>
-      <div>${p.body}</div>
-      <h4>Comments</h4>
-      ${p.comments.map(c=>`<p><b>${c.author.username}:</b> ${c.body}</p>`).join('')}
-      ${currentUser?`
-      <form method="POST" action="/posts/${p._id}/comments">
-        <input name="comment" placeholder="Comment..." required />
-        <button type="submit">Add Comment</button>
-      </form>`:''}
-    </article>
-  `).join('')}
-` }) %>
-
-
-// views/new_post.ejs
-<% include('layout', { title:'New Post', body:`
-  <h2>New Post</h2>
-  <form method="POST" action="/posts">
-    <input name="title" placeholder="Title" required />
-    <textarea name="body" rows="5" placeholder="Content..." required></textarea>
-    <button type="submit">Create</button>
-  </form>
-` }) %>
-
-
-// views/chatbot.ejs
-<% include('layout', { title:'AI Chatbot', body:`
-  <h2>AI Chatbot</h2>
-  <textarea id="chatInput" placeholder="Ask me anything..." rows="3"></textarea>
-  <button id="sendChat">Send</button>
-  <pre id="chatOutput" style="background:#222;color:#0f0;"></pre>
-  <script>
-    document.getElementById('sendChat').onclick = async () => {
-      const msg = document.getElementById('chatInput').value;
-      const res = await fetch('/chatbot', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ message: msg })
-      });
-      const data = await res.json();
-      document.getElementById('chatOutput').textContent +=
-        `You: ${msg}\\nAI: ${data.reply}\\n`;
-    };
-  </script>
-` }) %>
-
-
-// public/css/style.css
-body {
-  margin:0; padding:0;
-  background:#0f0f0f; color:#eee;
-  font-family:Arial, sans-serif;
-}
-header { background:#111; padding:10px; }
-nav a { color:#ccc; margin-right:10px; text-decoration:none; }
-nav a:hover { color:#fff; }
-main { padding:20px; max-width:800px; margin:auto; }
-form input, form textarea, form button {
-  display:block; width:100%; margin-bottom:10px; padding:8px;
-}
-article {
-  background:#222; padding:15px; margin-bottom:20px; border-radius:8px;
-}
-h3 { margin-top:0; }
-button {
-  background:#00aaff; color:#fff; border:none; cursor:pointer;
-}
-button:hover { background:#0088cc; }
+/* ------------------------------------------------------------ */
