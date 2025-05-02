@@ -1,18 +1,73 @@
 document.addEventListener('DOMContentLoaded', function () {
+  const signupForm = document.getElementById('signupForm');
   const loginForm = document.getElementById('loginForm');
 
-  loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+  // SIGN UP
+  if (signupForm) {
+    signupForm.addEventListener('submit', function (event) {
+      event.preventDefault();
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-    // Fake login check (for now)
-    if (email === '504390@bsd48.org' && password === 'twisterisacutecat') {
-      alert('Login successful!');
-      window.location.href = 'profile.html'; // or wherever you want
-    } else {
-      alert('Invalid email or password.');
-    }
-  });
+      if (!name || !email || !password || !confirmPassword) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      // Check if account already exists
+      if (localStorage.getItem(email)) {
+        alert("An account with that email already exists.");
+        return;
+      }
+
+      const userData = { name, email, password };
+      localStorage.setItem(email, JSON.stringify(userData));
+      alert('Sign up successful!');
+      window.location.href = 'login.html';
+    });
+  }
+
+  // LOG IN
+  if (loginForm) {
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const userData = localStorage.getItem(email);
+
+      if (!userData) {
+        alert('No account found with that email.');
+        return;
+      }
+
+      const user = JSON.parse(userData);
+      if (user.password === password) {
+        alert('Login successful!');
+        window.location.href = 'profile.html'; // or wherever you want to redirect
+      } else {
+        alert('Incorrect password.');
+      }
+    });
+  }
+
+  // Email format check
+  function validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
 });
