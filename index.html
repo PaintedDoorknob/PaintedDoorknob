@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PaintedDoorKnob</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <script src="js/app.js" defer></script>
 </head>
 <body>
   <header>
     <nav>
+      <div class="logo">
+        <img src="assets/logo.png" alt="Logo">
+      </div>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="signup.html">Sign Up</a></li>
@@ -22,25 +26,34 @@
 
   <main>
     <section class="hero">
-      <h1>Welcome to PaintedDoorKnob!</h1>
-      <p>Your community hub for discussions and more.</p>
-      <a href="signup.html" class="cta-button">Join Us</a>
+      <div class="hero-content">
+        <h1>Welcome to PaintedDoorKnob!</h1>
+        <p>Join a community where you can discuss, share, and learn. <br> Explore a world of conversations and connections.</p>
+        <a href="signup.html" class="cta-button">Get Started</a>
+      </div>
     </section>
 
     <section class="features">
       <div class="feature">
-        <h2>Forums</h2>
-        <p>Join discussions with other members.</p>
+        <i class="fas fa-comments"></i>
+        <h3>Forums</h3>
+        <p>Discuss any topic with our vibrant community.</p>
       </div>
       <div class="feature">
-        <h2>Chatbot</h2>
-        <p>Have a question? Our AI chatbot can help.</p>
+        <i class="fas fa-robot"></i>
+        <h3>AI Chatbot</h3>
+        <p>Our AI is ready to answer your questions anytime.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-users"></i>
+        <h3>Followers</h3>
+        <p>Follow your favorite members and stay updated.</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 PaintedDoorKnob</p>
+    <p>&copy; 2025 PaintedDoorKnob | Designed by You</p>
   </footer>
 </body>
 </html>
