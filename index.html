@@ -1,82 +1,275 @@
-/* ------------------ HEADER ------------------ */
-.site-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; position: fixed; top: 0; width: 100%; background: rgba(18,18,18,0.9); z-index: 1000; }
-.site-header.light-mode { background: rgba(245,245,245,0.9); }
-.logo { height: 48px; }
-.nav { display: flex; gap: 16px; }
-.nav__link { padding: 8px 12px; border-radius: var(--radius); transition: background var(--transition), color var(--transition); }
-.nav__link:hover, .nav__link.active { background: var(--primary); color: var(--txt-dark); }
-#themeToggle { background: transparent; border: 2px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: var(--radius); cursor: pointer; transition: background var(--transition), color var(--transition); }
-#themeToggle:hover { background: var(--primary); color: var(--txt-dark); }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>PaintedDoorKnob Forum</title>
+  <style>
+    /* ===== RESET & VARIABLES ===== */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg-dark:#121212;--bg-light:#f5f5f5;
+      --txt-light:#eee;--txt-dark:#111;
+      --primary:#00ffe7;--secondary:#1e1e2f;
+      --radius:8px;--trans:.3s;
+    }
+    body{font-family:sans-serif;background:var(--bg-dark);color:var(--txt-light);transition:background var(--trans),color var(--trans);}
+    body.light{background:var(--bg-light);color:var(--txt-dark);}
+    a{color:inherit;text-decoration:none;}
+    button{font-family:inherit;cursor:pointer;}
+    section{display:none;padding:100px 20px;}
+    section.active{display:block;}
+    .hidden{display:none;}
 
-/* ------------------ SECTIONS ------------------ */
-section { padding: 100px 32px 64px; }
-.hidden { display: none; }
+    /* ===== HEADER ===== */
+    header{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 32px;background:rgba(18,18,18,.9);z-index:100;}
+    header.light{background:rgba(245,245,245,.9);}
+    .logo{font-size:1.4rem;font-weight:bold;}
+    nav a{margin:0 12px;padding:6px 8px;border-radius:var(--radius);transition:background var(--trans);}
+    nav a.active,nav a:hover{background:var(--primary);color:var(--txt-dark);}
+    #themeBtn{background:transparent;border:2px solid var(--primary);color:var(--primary);padding:6px 12px;border-radius:var(--radius);}
 
-/* ----- HERO ----- */
-#home { text-align: center; background: url('images/hero-bg.jpg') center/cover no-repeat; color: var(--txt-light); }
-#home h1 { font-size: 3rem; margin-bottom: 16px; }
-#home p { font-size: 1.2rem; margin-bottom: 24px; }
-.btn--primary { background: var(--primary); color: var(--txt-dark); padding: 12px 24px; border: none; border-radius: var(--radius); cursor: pointer; transition: transform var(--transition); }
-.btn--primary:hover { transform: scale(1.05); }
+    /* ===== BUTTONS ===== */
+    .btn{padding:10px 20px;border:none;border-radius:var(--radius);transition:transform var(--trans);}
+    .btn.primary{background:var(--primary);color:var(--txt-dark);}
+    .btn.primary:hover{transform:scale(1.05);}
+    .btn.secondary{background:var(--secondary);color:var(--txt-light);}
 
-/* ----- ABOUT ----- */
-#about h2 { text-align: center; color: var(--primary); margin-bottom: 32px; }
-.about__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 24px; }
-.about__item { background: var(--secondary); padding: 24px; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-.about__item h3 { margin-bottom: 12px; }
+    /* ===== HERO ===== */
+    #home{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100vh;background:#242424;}
+    #home h1{font-size:2.8rem;margin-bottom:12px;}
+    #home p{margin-bottom:24px;font-size:1.1rem;}
 
-/* ----- FORUM ----- */
-#forum { display: flex; }
-.sidebar { width: 220px; position: sticky; top: 80px; background: var(--secondary); padding: 16px; border-radius: var(--radius); height: max-content; }
-.categories { list-style: none; margin-top: 24px; }
-.categories li { margin-bottom: 12px; }
-.categories li a { padding: 6px 8px; display: block; border-radius: var(--radius); transition: background var(--transition); }
-.categories li a:hover { background: var(--primary); color: var(--txt-dark); }
-.forum__feed { flex:1; margin-left: 32px; display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 24px; }
-.post-card { background: var(--secondary); padding: 16px; border-radius: var(--radius); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: space-between; }
-.post-card__title { margin-bottom: 8px; font-size: 1.2rem; }
-.post-card__meta { margin-bottom: 12px; color: #aaa; font-size: 0.9rem; }
-.post-card__excerpt { flex:1; margin-bottom: 12px; }
-.post-card__footer { display: flex; justify-content: space-between; align-items: center; }
-.btn--link { background: transparent; color: var(--primary); }
+    /* ===== ABOUT ===== */
+    #about{background:#1e1e2f;}
+    #about h2{text-align:center;color:var(--primary);margin-bottom:24px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+    .card{background:var(--secondary);padding:20px;border-radius:var(--radius);text-align:center;}
 
-/* ----- NEW POST ----- */
-#new-post h2 { margin-bottom: 24px; }
-.form { max-width:600px; margin:auto; display:flex; flex-direction:column; gap:12px; }
-.form input, .form textarea { padding:12px; border-radius: var(--radius); border:1px solid #333; background: var(--secondary); color: var(--txt-light); }
-.form button { align-self:flex-start; }
+    /* ===== FORUM ===== */
+    #forum{display:flex;gap:20px;}
+    .sidebar{width:200px;position:sticky;top:80px;}
+    .sidebar button{width:100%;margin-bottom:16px;}
+    .sidebar ul{list-style:none;}
+    .sidebar li a{display:block;padding:6px 8px;border-radius:var(--radius);transition:background var(--trans);}
+    .sidebar li a:hover{background:var(--primary);color:var(--txt-dark);}
+    .feed{flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+    .post{background:var(--secondary);padding:16px;border-radius:var(--radius);display:flex;flex-direction:column;justify-content:space-between;}
+    .post h3{margin-bottom:8px;}
+    .post .meta{font-size:.9rem;color:#aaa;margin-bottom:12px;}
+    .post .actions{display:flex;justify-content:space-between;align-items:center;}
+    .post .actions button{background:transparent;color:var(--primary);border:none;}
 
-/* ----- POST VIEW ----- */
-#post-view { max-width:800px; margin:auto; }
-#post-view h2 { margin-bottom: 8px; }
-#post-view .meta { margin-bottom:16px; color:#aaa; }
-#post-view .content { line-height:1.6; margin-bottom:24px; }
-#post-view .comments { margin-top:32px; }
-.comment { background: var(--secondary); padding: 12px; border-radius: var(--radius); margin-bottom:12px; }
+    /* ===== NEW POST ===== */
+    #newpost .form{max-width:600px;margin:auto;display:flex;flex-direction:column;gap:12px;}
+    .form input,.form textarea{padding:10px;border-radius:var(--radius);border:1px solid #333;background:var(--secondary);color:inherit;}
 
-/* ----- CHATBOT ----- */
-#chatbot { max-width:600px; margin:auto; }
-.chat-window { background: var(--secondary); height:300px; overflow-y:auto; padding:12px; border-radius: var(--radius); margin-bottom:12px; }
-.chat-window p { margin-bottom:8px; }
+    /* ===== POST VIEW ===== */
+    #postview{max-width:800px;margin:auto;}
+    #postview h2{margin-bottom:8px;}
+    #postview .meta{color:#aaa;margin-bottom:16px;}
+    #postview .content{line-height:1.6;}
+    #postview .comments{margin-top:32px;}
+    #postview .comment{background:var(--secondary);padding:12px;border-radius:var(--radius);margin-bottom:8px;}
+    #postview .comment-form textarea{width:100%;padding:10px;margin-bottom:12px;border-radius:var(--radius);border:1px solid #333;background:var(--secondary);}
 
-/* ----- AUTH ----- */
-.auth-page .auth-form { max-width:400px; margin:160px auto 0; display:flex; flex-direction:column; gap:12px; }
-.auth-form input { padding:12px; border-radius: var(--radius); border:1px solid #333; background: var(--secondary); color: var(--txt-light); }
-.auth-form button { align-self:flex-start; }
+    /* ===== CHATBOT ===== */
+    #chatbot .chat-window{background:var(--secondary);height:300px;overflow-y:auto;padding:12px;border-radius:var(--radius);margin-bottom:12px;}
+    #chatbot input{width:100%;padding:10px;border-radius:var(--radius);border:1px solid #333;background:var(--secondary);margin-bottom:8px;}
 
-/* ----- FOOTER ----- */
-.site-footer { text-align:center; padding:32px 0; color:#777; }
+    /* ===== AUTH ===== */
+    .auth .form{max-width:400px;margin:160px auto 0;display:flex;flex-direction:column;gap:12px;}
+    .auth .form input{padding:10px;border-radius:var(--radius);border:1px solid #333;background:var(--secondary);}
 
-/* ----- NOTIFICATIONS ----- */
-.notification-container { position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:8px; z-index:2000; }
-.notification { background: var(--primary); color: var(--txt-dark); padding:12px 20px; border-radius: var(--radius); animation: fadeInOut 4s forwards; }
-@keyframes fadeInOut { 0%,100%{opacity:0;} 10%,90%{opacity:1;} }
+    /* ===== NOTIFICATIONS ===== */
+    .notif-container{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:2000;}
+    .notif{background:var(--primary);color:var(--txt-dark);padding:12px 20px;border-radius:var(--radius);animation:notifInOut 4s forwards;}
+    @keyframes notifInOut{0%,100%{opacity:0;}10%,90%{opacity:1;}}
 
-/* ----- RESPONSIVE ----- */
-@media(max-width:768px){
-  .site-header { flex-direction:column; gap:12px; }
-  #forum { flex-direction:column; }
-  .sidebar { position:relative; width:100%; margin-bottom:24px; }
-  .forum__feed { margin-left:0; }
-}
-/* ------------------------------------------------------------ */
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:768px){
+      header{flex-wrap:wrap;justify-content:center;gap:12px;}
+      #forum{flex-direction:column;}
+      .sidebar{width:100%;order:2;margin-top:20px;}
+      .feed{order:1;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="logo">PaintedDoorKnob</div>
+    <nav class="nav">
+      <a href="#home" class="nav__link active" onclick="show('home')">Home</a>
+      <a href="#about" class="nav__link" onclick="show('about')">About</a>
+      <a href="#forum" class="nav__link" onclick="show('forum')">Forum</a>
+      <a href="#chatbot" class="nav__link" onclick="show('chatbot')">AI Chat</a>
+      <a href="#login" class="nav__link" onclick="show('login')">Login</a>
+    </nav>
+    <button id="themeBtn">Toggle Theme</button>
+  </header>
+
+  <!-- Home -->
+  <section id="home" class="active">
+    <div class="hero">
+      <h1>Welcome to PaintedDoorKnob</h1>
+      <p>Your modern community hub for posting, chatting, and learning.</p>
+      <button class="btn primary" onclick="show('signup')">Get Started</button>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <h2>About Us</h2>
+    <div class="grid about__grid">
+      <div class="card about__item"><h3>Community</h3><p>Connect globally and share knowledge.</p></div>
+      <div class="card about__item"><h3>AI Chat</h3><p>Instant answers and creative prompts.</p></div>
+      <div class="card about__item"><h3>Design</h3><p>Sleek dark/light theme interface.</p></div>
+      <div class="card about__item"><h3>Security</h3><p>Safe authentication and privacy.</p></div>
+    </div>
+  </section>
+
+  <!-- Forum -->
+  <section id="forum">
+    <div style="display:flex;gap:20px;">
+      <aside class="sidebar">
+        <button class="btn secondary" onclick="show('newpost')">New Post</button>
+        <ul class="categories">
+          <li><a href="#">General</a></li>
+          <li><a href="#">Tech</a></li>
+          <li><a href="#">Gaming</a></li>
+          <li><a href="#">Art</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </aside>
+      <div class="feed forum__feed">
+        <!-- Example Post Card -->
+        <div class="post">
+          <h3>Example Post Title</h3>
+          <p class="meta">by User123 • 2h ago</p>
+          <p class="excerpt">This is a short excerpt of the post content...</p>
+          <div class="actions">
+            <button class="btn secondary" onclick="show('postview')">Read More</button>
+            <span>5 comments</span>
+          </div>
+        </div>
+        <!-- Repeat others -->
+      </div>
+    </div>
+  </section>
+
+  <!-- New Post -->
+  <section id="newpost">
+    <h2>Create New Post</h2>
+    <form id="newPostForm" class="form">
+      <input type="text" placeholder="Title" required>
+      <textarea rows="6" placeholder="Your content..." required></textarea>
+      <button class="btn primary">Publish</button>
+    </form>
+  </section>
+
+  <!-- Single Post View -->
+  <section id="postview">
+    <article>
+      <h2>Example Post Title</h2>
+      <p class="meta">by User123 • 2h ago</p>
+      <div class="content"><p>Full content goes here...</p></div>
+    </article>
+    <section class="comments">
+      <h3>Comments</h3>
+      <div class="comment"><p><strong>Commenter1:</strong> Great post!</p></div>
+      <form id="commentForm" class="form">
+        <textarea rows="4" placeholder="Add a comment..." required></textarea>
+        <button class="btn secondary">Submit</button>
+      </form>
+    </section>
+  </section>
+
+  <!-- AI Chatbot -->
+  <section id="chatbot">
+    <h2>AI Chatbot</h2>
+    <div id="chatWindow" class="chat-window"></div>
+    <form id="chatForm" class="form">
+      <input type="text" id="chatInput" placeholder="Ask me anything..." required>
+      <button class="btn primary">Send</button>
+    </form>
+  </section>
+
+  <!-- Login -->
+  <section id="login" class="auth">
+    <h2>Login</h2>
+    <form id="loginForm" class="form">
+      <input type="text" placeholder="Username" required>
+      <input type="password" placeholder="Password" required>
+      <button class="btn primary">Login</button>
+    </form>
+    <p>Don't have an account? <a onclick="show('signup')">Sign up</a></p>
+  </section>
+
+  <!-- Signup -->
+  <section id="signup" class="auth">
+    <h2>Sign Up</h2>
+    <form id="signupForm" class="form">
+      <input type="text" placeholder="Username" required>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
+      <button class="btn primary">Sign Up</button>
+    </form>
+    <p>Have an account? <a onclick="show('login')">Login</a></p>
+  </section>
+
+  <!-- Notifications -->
+  <div id="notif-container" class="notif-container"></div>
+
+  <script>
+    // Navigation and section toggling
+    function show(id) {
+      document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+      document.querySelector(`nav a[href="#${id}"]`)?.classList.add('active');
+    }
+
+    // Theme toggle
+    document.getElementById('themeBtn').onclick = () => {
+      document.body.classList.toggle('light');
+      document.querySelector('header').classList.toggle('light');
+    };
+
+    // Notifications
+    function showNotification(msg) {
+      const c = document.getElementById('notif-container');
+      const d = document.createElement('div');
+      d.className = 'notif';
+      d.textContent = msg;
+      c.appendChild(d);
+      setTimeout(()=>c.removeChild(d),4000);
+    }
+
+    // Demo form handlers
+    ['loginForm','signupForm'].forEach(id=>{
+      document.getElementById(id)?.addEventListener('submit',e=>{
+        e.preventDefault(); showNotification(id==='loginForm'?'Logged in!':'Account created!');
+        show('forum');
+      });
+    });
+    document.getElementById('newPostForm')?.addEventListener('submit',e=>{
+      e.preventDefault(); showNotification('Post published!'); show('forum');
+    });
+    document.getElementById('commentForm')?.addEventListener('submit',e=>{
+      e.preventDefault(); showNotification('Comment added!'); show('postview');
+    });
+
+    // AI Chatbot (stub)
+    document.getElementById('chatForm')?.addEventListener('submit',async e=>{
+      e.preventDefault();
+      const input=document.getElementById('chatInput'),win=document.getElementById('chatWindow');
+      const msg=input.value.trim(); if(!msg) return;
+      win.innerHTML+=`<p><strong>You:</strong> ${msg}</p>`; input.value='';
+      // simulate AI
+      setTimeout(()=>win.innerHTML+=`<p><strong>AI:</strong> This is a stub reply.</p>`,500);
+    });
+  </script>
+</body>
+</html>
