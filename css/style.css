@@ -1,4 +1,4 @@
-/* General Reset */
+* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -144,4 +144,67 @@ footer {
   .features {
     grid-template-columns: 1fr;
   }
+}
+
+/* Sign-Up Page */
+.signup-form {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #333;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.signup-form h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.signup-form label {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #222;
+  color: #fff;
+}
+
+.signup-form button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: #ffeb3b;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signup-form button:hover {
+  background: #ffb300;
+}
+
+.signup-form p {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.signup-form a {
+  color: #ffeb3b;
+  text-decoration: none;
+}
+
+.signup-form a:hover {
+  text-decoration: underline;
 }
