@@ -1,9 +1,9 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 3000; // Choose any port
 
+// Middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
 // Example login route
@@ -18,6 +18,7 @@ app.post('/login', (req, res) => {
   }
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
