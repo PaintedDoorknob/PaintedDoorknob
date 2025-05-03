@@ -403,3 +403,55 @@ footer {
 .logout-btn:hover {
   background-color: #d32f2f;
 }
+
+/* Add this to your styles.css or equivalent file */
+.forum-post-form {
+  background: #333;
+  color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.forum-post-form h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.forum-post-form label {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.forum-post-form input,
+.forum-post-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #222;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.forum-post-form button {
+  width: 100%;
+  padding: 15px;
+  background: #ffeb3b;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.forum-post-form button:hover {
+  background: #ffb300;
+}
