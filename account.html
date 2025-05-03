@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | PaintedDoorKnob</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (!localStorage.getItem('loggedIn')) {
+        window.location.href = 'login.html';
+      }
+
+      const user = JSON.parse(localStorage.getItem('user'));
+      document.getElementById('name').value = user.name;
+      document.getElementById('email').value = user.email;
+    });
+
+    function saveChanges() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // Update the user data in localStorage
+      const user = { name, email, password: localStorage.getItem('password') };
+      localStorage.setItem('user', JSON.stringify(user));
+
+      alert('Changes saved successfully');
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="account.html">My Account</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="login.html" onclick="logout()">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>My Account</h1>
+    <form onsubmit="event.preventDefault(); saveChanges();">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 PaintedDoorKnob | Designed by You</p>
+  </footer>
+</body>
+</html>
