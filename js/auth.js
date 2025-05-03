@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const userData = { name, email, password };
-      localStorage.setItem(email, JSON.stringify(userData));
+      localStorage.setItem(email, JSON.stringify(userData)); // Store by email key
       alert('Sign up successful!');
       window.location.href = 'login.html';
     });
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
 
-      const userData = localStorage.getItem(email);
+      const userData = localStorage.getItem(email); // Get user by email key
 
       if (!userData) {
         alert('No account found with that email.');
@@ -58,7 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const user = JSON.parse(userData);
       if (user.password === password) {
         alert('Login successful!');
-        window.location.href = 'profile.html'; // or wherever you want to redirect
+        localStorage.setItem('loggedIn', true);
+        localStorage.setItem('userEmail', email);
+        window.location.href = 'home.html'; // Redirect to home page
       } else {
         alert('Incorrect password.');
       }
