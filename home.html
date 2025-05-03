@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | PaintedDoorKnob</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (!localStorage.getItem('loggedIn')) {
+        // Redirect to login if not logged in
+        window.location.href = 'login.html';
+      }
+
+      const userEmail = localStorage.getItem('userEmail');
+      document.getElementById('welcomeMessage').innerText = `Welcome, ${userEmail}`;
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="assets/logo.png" alt="Logo">
+      </div>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="account.html">My Account</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="guidelines.html">Guidelines</a></li>
+        <li><a href="post.html">Create Post</a></li>
+        <li><a href="login.html" onclick="logout()">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1 id="welcomeMessage"></h1>
+    <!-- Content here -->
+  </main>
+
+  <footer>
+    <p>&copy; 2025 PaintedDoorKnob | Designed by You</p>
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('userEmail');
+      window.location.href = 'login.html'; // Redirect to login after logout
+    }
+  </script>
+</body>
+</html>
