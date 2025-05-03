@@ -15,9 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Example forum data (replace with actual data from your platform)
   const forums = [
-    { name: 'General Discussion', description: 'Talk about anything!' },
-    { name: 'Tech Talk', description: 'Discuss the latest in technology' },
-    { name: 'Game Reviews', description: 'Share your thoughts on games' },
+    { name: 'Technology', description: 'Discuss the latest tech trends.' },
+    { name: 'Science', description: 'Explore the wonders of science.' },
+    { name: 'Gaming', description: 'Share gaming tips, reviews, and news.' },
+    { name: 'Movies', description: 'Talk about the latest movies and shows.' },
+    { name: 'Music', description: 'Share your favorite music and artists.' },
   ];
 
   // Display the forums on the home page
@@ -57,5 +59,4 @@ document.addEventListener('DOMContentLoaded', function () {
       window.location.href = 'login.html';
     });
   }
-
-});  // <-- This closes the 'DOMContentLoaded' event listener
+});
