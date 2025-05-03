@@ -14,28 +14,32 @@
         <img src="assets/logo.png" alt="Logo">
       </div>
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="profile.html">My Account</a></li>
-        <li><a href="logout.html" id="logoutBtn">Log Out</a></li>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><button id="logoutButton">Log Out</button></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <section class="welcome">
-      <h1>Welcome back, <span id="userName">User</span>!</h1>
-      <p>Explore the forums and engage with others!</p>
-    </section>
-
-    <section class="search-container">
-      <input type="text" id="searchBar" placeholder="Search forums..." onkeyup="filterForums()">
-    </section>
-
-    <section class="forums">
-      <h2>Other People's Forums</h2>
-      <div id="forumList">
-        <!-- Dynamically populated list of forums -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Welcome to the Forums</h1>
+        <p>Connect, share, and explore the community.</p>
       </div>
+    </section>
+
+    <section class="search-section">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search forums..." />
+        <button id="searchButton" class="cta-button">Search</button>
+      </div>
+    </section>
+
+    <section class="forum-list-section">
+      <h2>Browse Forums</h2>
+      <div id="forumList" class="forum-list"></div>
     </section>
   </main>
 
