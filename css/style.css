@@ -377,34 +377,34 @@ footer {
 
 .forum-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .forum-card h3 {
-  color: #ff9a8b;
+  font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
 .forum-card p {
-  font-size: 0.95rem;
-  line-height: 1.4;
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
-.logout-btn {
-  background-color: #f44336;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 20px;
+.forum-card small {
+  color: #aaa;
+  font-size: 0.8rem;
 }
 
-.logout-btn:hover {
-  background-color: #d32f2f;
+.forum-card a {
+  color: #ffeb3b;
+  text-decoration: none;
 }
 
-/* Add this to your styles.css or equivalent file */
+.forum-card a:hover {
+  text-decoration: underline;
+}
+
+/* Forum Post Form */
 .forum-post-form {
   background: #333;
   color: #fff;
@@ -412,7 +412,7 @@ footer {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   max-width: 600px;
-  margin: 50px auto;
+  margin: 50px auto 20px;
 }
 
 .forum-post-form h2 {
@@ -439,6 +439,12 @@ footer {
   font-size: 1rem;
 }
 
+.forum-post-form input:focus,
+.forum-post-form textarea:focus {
+  border-color: #ffeb3b;
+  outline: none;
+}
+
 .forum-post-form button {
   width: 100%;
   padding: 15px;
@@ -456,60 +462,6 @@ footer {
   background: #ffb300;
 }
 
-/* Styling for the forum section */
-.forum-section {
-  margin: 20px;
-}
-
-.forum-post-form {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.forum-post-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.forum-post-form input, .forum-post-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.submit-post-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.submit-post-btn:hover {
-  background-color: #45a049;
-}
-
-/* Styling for individual posts */
-.forum-card {
-  margin: 20px 0;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-.forum-card h3 {
-  margin-top: 0;
-}
-
-.forum-card small {
-  color: #888;
-  font-size: 0.8em;
+.forum-post-form input::placeholder {
+  color: #ccc;
 }
