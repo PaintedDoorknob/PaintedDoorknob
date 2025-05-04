@@ -1,27 +1,31 @@
-// login.js (you can link this script in your HTML file)
-document.getElementById('loginForm').addEventListener('submit', function (event) {
+document.getElementById('login-form').addEventListener('submit', function(event) {
   event.preventDefault();
 
+  // Get form input values
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  // Make a POST request to the backend
-  fetch('http://localhost:3000/login', { // Backend URL
+  // Send the login request to the backend
+  fetch('http://localhost:3000/login', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }), // Send user input
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
   })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert(data.message); // If login is successful
-      } else {
-        alert(data.message); // Show error message
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Save the username (or email) to localStorage on successful login
+      localStorage.setItem('username', email); // You can store the email or a username if you want
+      
+      // Redirect the user to the homepage (or any other page)
+      window.location.href = 'home.html'; // Or your desired page (e.g., forum page)
+    } else {
+      // Display an error message
+      alert(data.message);
+    }
+  })
+  .catch(err => {
+    console.error('Login error:', err);
+    alert('An error occurred while logging in.');
+  });
 });
