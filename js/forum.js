@@ -35,4 +35,25 @@ document.getElementById('create-post-form').addEventListener('submit', function(
   } else {
     alert('Please fill in both the title and content fields.');
   }
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('createPostForm');
+  const postsContainer = document.getElementById('forumPosts');
+
+  // Submit new post
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('postTitle').value;
+    const content = document.getElementById('postContent').value;
+
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, content })
+    });
+
+    if (response.ok) {
+      form.reset();
+      loadPosts(); // refresh posts
+    }
+  });
+
