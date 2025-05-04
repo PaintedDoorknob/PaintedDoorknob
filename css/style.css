@@ -455,3 +455,61 @@ footer {
 .forum-post-form button:hover {
   background: #ffb300;
 }
+
+/* Styling for the forum section */
+.forum-section {
+  margin: 20px;
+}
+
+.forum-post-form {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.forum-post-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.forum-post-form input, .forum-post-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-post-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-post-btn:hover {
+  background-color: #45a049;
+}
+
+/* Styling for individual posts */
+.forum-card {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.forum-card h3 {
+  margin-top: 0;
+}
+
+.forum-card small {
+  color: #888;
+  font-size: 0.8em;
+}
