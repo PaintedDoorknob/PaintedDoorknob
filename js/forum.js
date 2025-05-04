@@ -1,68 +1,61 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('create-post-form'); // your original ID
+  const form = document.getElementById('create-post-form');
   const postsContainer = document.querySelector('.forum-posts');
 
-  // Load existing posts on page load
-  async function loadPosts() {
-    try {
-      const res = await fetch('http://localhost:3000/api/posts');
-      const posts = await res.json();
-
-      postsContainer.innerHTML = ''; // Clear existing content
-      posts.forEach(post => {
-        const postCard = document.createElement('div');
-        postCard.classList.add('forum-card');
-        postCard.innerHTML = `
-          <h3>${post.title}</h3>
-          <p>${post.content}</p>
-          <small>Posted on ${new Date(post.createdAt).toLocaleString()}</small>
-        `;
-        postsContainer.appendChild(postCard);
-      });
-    } catch (err) {
-      console.error('Error loading posts:', err);
-    }
+  // Check if user is logged in
+  const username = localStorage.getItem('username'); // or token, depending on your logic
+  if (!username) {
+    form.innerHTML = '<p>You must be <a href="login.html">logged in</a> to post.</p>';
+    form.querySelector('button')?.remove(); // Optional: remove post button
+    return;
   }
 
-  // Submit new post
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
+  // Handle post submission
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
     const title = document.getElementById('post-title').value;
     const content = document.getElementById('post-content').value;
 
-    if (title && content) {
-      const newPost = { title, content };
+    if (!title || !content) {
+      alert('Please fill in both fields.');
+      return;
+    }
 
-      try {
-        const response = await fetch('http://localhost:3000/api/posts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newPost)
-        });
+    const response = await fetch('/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // You can add a token here if you start using JWT later
+      },
+      body: JSON.stringify({ title, content, username })
+    });
 
-        if (!response.ok) throw new Error('Failed to create post');
-        const data = await response.json();
-
-        // Add the new post to the page
-        const postCard = document.createElement('div');
-        postCard.classList.add('forum-card');
-        postCard.innerHTML = `
-          <h3>${data.title}</h3>
-          <p>${data.content}</p>
-          <small>Posted on ${new Date(data.createdAt).toLocaleString()}</small>
-        `;
-        postsContainer.appendChild(postCard);
-
-        form.reset();
-      } catch (err) {
-        console.error('Error creating post:', err);
-      }
+    if (response.ok) {
+      const newPost = await response.json();
+      displayPost(newPost);
+      form.reset();
     } else {
-      alert('Please fill in both the title and content fields.');
+      alert('Failed to post.');
     }
   });
 
-  // Load posts initially
+  // Load existing posts
+  async function loadPosts() {
+    const res = await fetch('/api/posts');
+    const posts = await res.json();
+    posts.forEach(displayPost);
+  }
+
+  function displayPost(post) {
+    const div = document.createElement('div');
+    div.classList.add('forum-card');
+    div.innerHTML = `
+      <h3>${post.title}</h3>
+      <p>${post.content}</p>
+      <small>Posted by ${post.username || 'Anonymous'} on ${new Date(post.createdAt).toLocaleString()}</small>
+    `;
+    postsContainer.appendChild(div);
+  }
+
   loadPosts();
 });
