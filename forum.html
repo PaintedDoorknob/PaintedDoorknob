@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Forum - PaintedDoorKnob</title>
-  <link rel="stylesheet" href="css/styles.css"> <!-- Link your styles.css -->
+  <link rel="stylesheet" href="css/styles.css" /> <!-- Link to your stylesheet -->
 </head>
 <body>
 
@@ -24,39 +24,28 @@
   </header>
 
   <!-- Forum Section -->
-  <div class="forum-section">
-    <div class="forum-post-form">
+  <main class="forum-section">
+    <!-- Post Creation Form -->
+    <section class="forum-post-form">
       <h2>Create a New Post</h2>
       <form id="create-post-form">
         <label for="post-title">Title</label>
         <input type="text" id="post-title" name="post-title" placeholder="Enter post title" required>
-        
+
         <label for="post-content">Content</label>
         <textarea id="post-content" name="post-content" rows="5" placeholder="Enter post content" required></textarea>
-        
+
         <button type="submit" class="submit-post-btn">Post</button>
       </form>
-    </div>
+    </section>
 
-    <div class="forum-posts">
-      <!-- Existing posts will be dynamically inserted here -->
-    </div>
-  </div>
+    <!-- Forum Posts Display -->
+    <section class="forum-posts">
+      <!-- Posts will be dynamically inserted here by forum.js -->
+    </section>
+  </main>
 
-  <script src="js/forum.js"></script> <!-- Link to the forum.js script -->
-
-  <section class="post-form">
-  <h2>Create a New Post</h2>
-  <form id="createPostForm">
-    <input type="text" id="postTitle" placeholder="Post title" required>
-    <textarea id="postContent" placeholder="Write your message..." rows="6" required></textarea>
-    <button type="submit">Post</button>
-  </form>
-</section>
-
-<section class="forum-posts" id="forumPosts">
-  <!-- Posts will be injected here -->
-</section>
+  <script src="js/forum.js"></script> <!-- Link to your JS logic -->
 
 </body>
 </html>
