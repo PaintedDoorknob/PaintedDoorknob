@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: #f4f4f4;
-  color: #333;
+  background: #f8f8f8; /* Light gray background */
+  color: #333; /* Dark gray text for readability */
   line-height: 1.6;
   overflow-x: hidden;
   height: 100vh;
@@ -16,7 +16,7 @@ body {
 
 /* Header Navigation */
 header {
-  background: #ffffff;
+  background: #343a40; /* Dark gray background for professionalism */
   padding: 20px 0;
   position: fixed;
   top: 0;
@@ -46,26 +46,26 @@ header ul {
 
 header ul li a {
   text-decoration: none;
-  color: #333;
+  color: #fff;
   font-size: 18px;
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
 header ul li a:hover {
-  color: #007bff;
+  color: #ff7f50; /* Subtle coral hover color */
 }
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #007bff, #00aaff);
+  background: #e9ecef; /* Light gray background for hero section */
   padding: 100px 20px;
   text-align: center;
-  color: white;
+  color: #343a40; /* Dark gray for text */
 }
 
 .hero-content h1 {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-family: 'Poppins', sans-serif;
   margin-bottom: 20px;
 }
@@ -81,7 +81,7 @@ header ul li a:hover {
   font-size: 1.1rem;
   font-weight: 600;
   color: #fff;
-  background: #ffb300;
+  background: #007bff; /* Professional blue button */
   border-radius: 30px;
   text-transform: uppercase;
   text-decoration: none;
@@ -89,7 +89,7 @@ header ul li a:hover {
 }
 
 .cta-button:hover {
-  background: #ff8f00;
+  background: #0056b3; /* Darker blue for hover effect */
 }
 
 /* Features Section */
@@ -102,22 +102,22 @@ header ul li a:hover {
 }
 
 .feature {
-  background: #ffffff;
+  background: #fff;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .feature i {
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #007bff;
+  color: #343a40;
 }
 
 .feature h3 {
@@ -132,11 +132,10 @@ header ul li a:hover {
 /* Footer */
 footer {
   text-align: center;
-  background: #ffffff;
-  color: #333;
+  background: #343a40;
+  color: #fff;
   padding: 20px;
   margin-top: 50px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive */
@@ -153,7 +152,7 @@ footer {
 /* Signup & Login Forms Shared Styles */
 .signup-form,
 .login-form {
-  background: #ffffff;
+  background: #fff;
   color: #333;
   padding: 40px;
   border-radius: 10px;
@@ -170,25 +169,30 @@ footer {
 }
 
 .signup-form input,
-.login-form input {
+.login-form input,
+.forum-post-form input,
+.forum-post-form textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background: #f9f9f9;
+  background: #f8f8f8; /* Subtle background for inputs */
   color: #333;
   font-size: 1rem;
 }
 
 .signup-form input:focus,
-.login-form input:focus {
-  border-color: #007bff;
+.login-form input:focus,
+.forum-post-form input:focus,
+.forum-post-form textarea:focus {
+  border-color: #007bff; /* Blue border on focus */
   outline: none;
 }
 
 .signup-form button,
-.login-form button {
+.login-form button,
+.forum-post-form button {
   display: block;
   width: 100%;
   padding: 15px;
@@ -203,25 +207,9 @@ footer {
 }
 
 .signup-form button:hover,
-.login-form button:hover {
+.login-form button:hover,
+.forum-post-form button:hover {
   background: #0056b3;
-}
-
-.signup-form p,
-.login-form p {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.signup-form a,
-.login-form a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.signup-form a:hover,
-.login-form a:hover {
-  text-decoration: underline;
 }
 
 /* Logged-in Home */
@@ -246,7 +234,7 @@ footer {
   margin: 40px auto;
   max-width: 600px;
   padding: 10px;
-  background-color: #ffffff;
+  background-color: #f8f8f8;
   border-radius: 50px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
@@ -256,7 +244,7 @@ footer {
   padding: 12px 20px;
   border: none;
   border-radius: 50px;
-  background: #f9f9f9;
+  background: #fff;
   color: #333;
   outline: none;
 }
@@ -290,9 +278,10 @@ footer {
 }
 
 .forum-card {
-  background: #ffffff;
+  background: #fff;
   padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
@@ -327,7 +316,7 @@ footer {
 
 /* Forum Post Form */
 .forum-post-form {
-  background: #ffffff;
+  background: #fff;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -343,7 +332,7 @@ footer {
 
 .forum-post-form input::placeholder,
 .forum-post-form textarea::placeholder {
-  color: #aaa;
+  color: #ccc;
 }
 
 /* Forum Controls */
@@ -389,42 +378,15 @@ footer {
 }
 
 .create-post-button {
-  display: inline-block;
-  background-color: #007BFF;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 16px;
+  background: #28a745;
+  color: #fff;
   font-weight: 600;
-  text-decoration: none;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-  transition: background-color 0.3s, transform 0.2s;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  transition: background 0.3s ease;
 }
 
 .create-post-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  font-family: 'Helvetica Neue', sans-serif;
-  color: #333;
-  margin: 20px;
-}
-
-.logo-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(145deg, #444 40%, #999 100%);
-  clip-path: polygon(10% 0%, 90% 0%, 100% 90%, 0% 100%);
-  margin-right: 15px;
-}
-
-.logo-title {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+  background: #218838;
 }
