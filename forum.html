@@ -25,13 +25,22 @@
 
   <!-- Forum Section -->
   <div class="forum-section">
-    <div class="forum-header">
+
+    <!-- Forum Controls: Search + Create Button -->
+    <div class="forum-controls">
+      <form class="forum-search-form">
+        <input type="text" placeholder="Search posts..." name="search" />
+        <button type="submit"><span>🔍</span></button>
+      </form>
+
       <a href="create-post.html" class="create-post-button">Create New Post</a>
     </div>
 
+    <!-- Forum Posts List -->
     <div class="forum-posts">
       <!-- Existing posts will be dynamically inserted here -->
     </div>
+
   </div>
 
   <script src="js/forum.js"></script> <!-- Link to the forum.js script -->
