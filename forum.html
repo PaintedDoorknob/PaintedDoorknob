@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forum - PaintedDoorKnob</title>
-  <link rel="stylesheet" href="css/styles.css"> <!-- Link your styles.css -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <!-- Header -->
-  <header>
+  <header class="main-header">
     <nav>
       <div class="logo">
         <img src="logo.png" alt="PaintedDoorKnob Logo">
       </div>
-      <ul>
+      <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="forum.html">Forum</a></li>
+        <li><a href="forum.html" class="active">Forum</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="login.html">Login</a></li>
       </ul>
@@ -24,26 +25,24 @@
   </header>
 
   <!-- Forum Section -->
-  <div class="forum-section">
+  <main class="forum-section">
 
-    <!-- Forum Controls: Search + Create Button -->
+    <!-- Forum Controls -->
     <div class="forum-controls">
       <form class="forum-search-form">
         <input type="text" placeholder="Search posts..." name="search" />
         <button type="submit"><span>🔍</span></button>
       </form>
-
-      <a href="create-post.html" class="create-post-button">Create New Post</a>
+      <a href="create-post.html" class="create-post-button">+ New Post</a>
     </div>
 
-    <!-- Forum Posts List -->
+    <!-- Forum Posts -->
     <div class="forum-posts">
-      <!-- Existing posts will be dynamically inserted here -->
+      <!-- Posts will be inserted here -->
     </div>
 
-  </div>
+  </main>
 
-  <script src="js/forum.js"></script> <!-- Link to the forum.js script -->
-
+  <script src="js/forum.js"></script>
 </body>
 </html>
