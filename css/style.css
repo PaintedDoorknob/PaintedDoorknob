@@ -514,3 +514,64 @@ main {
 .signup-form button.cta-button:hover {
   background-color: #e63838;
 }
+
+.forum-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+.forum-search-form {
+  display: flex;
+  align-items: center;
+  background-color: #f2f4f7;
+  border-radius: 8px;
+  padding: 6px 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.forum-search-form input[type="text"] {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 8px;
+  font-size: 16px;
+  width: 200px;
+}
+
+.forum-search-form button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #007BFF;
+  padding: 6px 10px;
+  transition: transform 0.2s;
+}
+
+.forum-search-form button:hover {
+  transform: scale(1.1);
+}
+
+.create-post-button {
+  display: inline-block;
+  background-color: #007BFF;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.create-post-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
