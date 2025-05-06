@@ -91,12 +91,13 @@
         <div class="logo-icon"></div>
         <div class="logo-text">Painted<span>DoorKnob</span></div>
       </div>
-      <ul>
+      <ul id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="signup.html">Sign Up</a></li>
         <li><a href="login.html">Log In</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li><a href="chatbot.html">Chatbot</a></li>
+        <!-- "Post" link will be dynamically inserted here if logged in -->
       </ul>
     </nav>
   </header>
@@ -132,5 +133,18 @@
   <footer>
     <p>&copy; 2025 PaintedDoorKnob | Designed by You</p>
   </footer>
+
+  <script>
+    // Check if user is logged in (this is a placeholder for your actual authentication system)
+    const userLoggedIn = localStorage.getItem('userLoggedIn'); // For example, could be set on login
+
+    // Show the Post link if the user is logged in
+    const navLinks = document.getElementById('nav-links');
+    if (userLoggedIn) {
+      const postLink = document.createElement('li');
+      postLink.innerHTML = '<a href="post.html">Post</a>';
+      navLinks.appendChild(postLink);
+    }
+  </script>
 </body>
 </html>
