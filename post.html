@@ -2,50 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create a Post - PaintedDoorKnob</title>
+  <title>Create Post</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="logo">
-        <div class="logo-icon"></div>
-        <div class="logo-text">Painted<span>DoorKnob</span></div>
-      </div>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="chatbot.html">Chatbot</a></li>
-        <li><a href="logout.html">Logout</a></li>
-        <li><a href="post.html" class="post-link">Post</a></li>
-      </ul>
-    </nav>
-  </header>
-
   <main>
-    <section class="post-form">
-      <h1>Create a New Post</h1>
-      <form action="/submit-post" method="POST" enctype="multipart/form-data">
-        <div>
-          <label for="postTitle">Title</label>
-          <input type="text" id="postTitle" name="postTitle" required>
-        </div>
-        <div>
-          <label for="postContent">Content</label>
-          <textarea id="postContent" name="postContent" required></textarea>
-        </div>
-        <div>
-          <label for="postImage">Upload an Image</label>
-          <input type="file" id="postImage" name="postImage">
-        </div>
-        <button type="submit">Post</button>
-      </form>
-    </section>
+    <h1>Create a Post</h1>
+    <form action="/submit-post" method="POST" enctype="multipart/form-data">
+      <label>Title:<br><input type="text" name="title" required></label><br><br>
+      <label>Content:<br><textarea name="content" rows="5" required></textarea></label><br><br>
+      <label>Image (optional):<br><input type="file" name="image" accept="image/*"></label><br><br>
+      <button type="submit">Post</button>
+    </form>
   </main>
-
-  <footer>
-    <p>&copy; 2025 PaintedDoorKnob | Designed by PaintedDoorknob</p>
-  </footer>
 </body>
 </html>
