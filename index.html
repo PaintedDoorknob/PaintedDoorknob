@@ -7,12 +7,87 @@
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <script src="js/app.js" defer></script>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a1a;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #121212;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Logo Container */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      clip-path: polygon(10% 0%, 90% 0%, 90% 100%, 10% 100%);
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .logo-icon::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #f8f9fa;
+      border-radius: 50%;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
+    .logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .logo-text span {
+      color: #bbbbbb;
+      font-weight: 400;
+    }
+
+    /* Navigation links */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #3b82f6;
+    }
+  </style>
 </head>
 <body>
   <header>
     <nav>
-      <div class="logo">
-        <!-- Non-clickable Logo -->
+      <div class="logo-container">
         <div class="logo-icon"></div>
         <div class="logo-text">Painted<span>DoorKnob</span></div>
       </div>
