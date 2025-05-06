@@ -72,6 +72,14 @@
       gap: 20px;
     }
 
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
     nav a {
       text-decoration: none;
       color: #fff;
@@ -97,7 +105,7 @@
         <li><a href="login.html">Log In</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li><a href="chatbot.html">Chatbot</a></li>
-        <!-- "Post" link will be dynamically inserted here if logged in -->
+        <!-- Post button appears here if logged in -->
       </ul>
     </nav>
   </header>
@@ -135,15 +143,14 @@
   </footer>
 
   <script>
-    // Check if user is logged in (this is a placeholder for your actual authentication system)
-    const userLoggedIn = localStorage.getItem('userLoggedIn'); // For example, could be set on login
-
-    // Show the Post link if the user is logged in
+    // Show the Post button only if logged in
     const navLinks = document.getElementById('nav-links');
-    if (userLoggedIn) {
-      const postLink = document.createElement('li');
-      postLink.innerHTML = '<a href="post.html">Post</a>';
-      navLinks.appendChild(postLink);
+    const isLoggedIn = localStorage.getItem('userLoggedIn'); // true/false string
+
+    if (isLoggedIn === 'true') {
+      const postItem = document.createElement('li');
+      postItem.innerHTML = '<a href="post.html">Post</a>';
+      navLinks.appendChild(postItem);
     }
   </script>
 </body>
