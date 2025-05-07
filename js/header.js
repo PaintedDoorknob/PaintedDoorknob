@@ -17,14 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
     </header>
   `;
 
+  // Insert header and THEN wait for it to render
   document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
-  // Check login and add Post link
-  const userLoggedIn = localStorage.getItem('userLoggedIn');
-  if (userLoggedIn) {
-    const navLinks = document.getElementById('nav-links');
-    const postLink = document.createElement('li');
-    postLink.innerHTML = '<a href="post.html">Post</a>';
-    navLinks.appendChild(postLink);
-  }
+  // Small delay to ensure the header is fully parsed
+  requestAnimationFrame(() => {
+    const userLoggedIn = localStorage.getItem('userLoggedIn');
+    if (userLoggedIn) {
+      const navLinks = document.getElementById('nav-links');
+      if (navLinks) {
+        const postLink = document.createElement('li');
+        postLink.innerHTML = '<a href="post.html">Post</a>';
+        navLinks.appendChild(postLink);
+      }
+    }
+  });
 });
