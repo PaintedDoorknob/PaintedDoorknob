@@ -1,0 +1,30 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const headerHTML = `
+    <header>
+      <nav>
+        <div class="logo-container">
+          <div class="logo-icon"></div>
+          <div class="logo-text">Painted<span>DoorKnob</span></div>
+        </div>
+        <ul id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="login.html">Log In</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="chatbot.html">Chatbot</a></li>
+        </ul>
+      </nav>
+    </header>
+  `;
+
+  document.body.insertAdjacentHTML('afterbegin', headerHTML);
+
+  // Check login and add Post link
+  const userLoggedIn = localStorage.getItem('userLoggedIn');
+  if (userLoggedIn) {
+    const navLinks = document.getElementById('nav-links');
+    const postLink = document.createElement('li');
+    postLink.innerHTML = '<a href="post.html">Post</a>';
+    navLinks.appendChild(postLink);
+  }
+});
