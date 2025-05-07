@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><a href="signup.html">Sign Up</a></li>
           <li><a href="login.html">Log In</a></li>
           <li><a href="profile.html">Profile</a></li>
-          <li><a href="chatbot.html">Chatbot</a></li>
         </ul>
       </nav>
     </header>
