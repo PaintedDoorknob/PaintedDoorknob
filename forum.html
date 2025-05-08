@@ -54,20 +54,60 @@
       background: #2563eb;
     }
 
-    .post-card {
+    .post {
       background: #2e2e2e;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.3);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
     }
 
-    .post-card h3 {
+    .post h3 {
       margin: 0 0 10px 0;
     }
 
-    .post-card small {
+    .post small {
       color: #aaa;
+    }
+
+    .comment-area {
+      margin-top: 10px;
+    }
+
+    .comment-input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 6px;
+      background: #1f1f1f;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 6px;
+    }
+
+    .submit-comment {
+      background: #10b981;
+      border: none;
+      padding: 8px 12px;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-comment:hover {
+      background: #059669;
+    }
+
+    .comment {
+      background: #1e1e1e;
+      padding: 6px 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+    }
+
+    .no-comments {
+      color: #777;
+      font-size: 0.9rem;
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -81,54 +121,11 @@
       <button type="submit">Publish</button>
     </form>
 
-    <div id="posts-container">
-      <!-- Posts will appear here -->
+    <div id="forum-posts">
+      <!-- Posts will be loaded here -->
     </div>
   </div>
 
-  <script>
-    // Save post to localStorage
-    function savePost(title, content) {
-      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-      const newPost = {
-        title,
-        content,
-        username: localStorage.getItem("username") || "Anonymous",
-        createdAt: new Date().toISOString()
-      };
-      posts.push(newPost);
-      localStorage.setItem("posts", JSON.stringify(posts));
-    }
-
-    // Display all posts
-    function showPosts() {
-      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-      const container = document.getElementById("posts-container");
-      container.innerHTML = "";
-      posts.reverse().forEach(post => {
-        const div = document.createElement("div");
-        div.className = "post-card";
-        div.innerHTML = `
-          <h3>${post.title}</h3>
-          <p>${post.content}</p>
-          <small>By ${post.username} on ${new Date(post.createdAt).toLocaleString()}</small>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    // Form handler
-    document.getElementById("post-form").addEventListener("submit", e => {
-      e.preventDefault();
-      const title = document.getElementById("post-title").value;
-      const content = document.getElementById("post-content").value;
-      savePost(title, content);
-      showPosts();
-      e.target.reset(); // clear form
-    });
-
-    // Load posts on page load
-    document.addEventListener("DOMContentLoaded", showPosts);
-  </script>
+  <script src="js/forum.js"></script>
 </body>
 </html>
