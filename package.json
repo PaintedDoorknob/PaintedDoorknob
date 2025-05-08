@@ -1,7 +1,6 @@
 {
   "name": "painteddoorknob",
   "version": "1.0.0",
-  "description": "Forum backend for PaintedDoorKnob",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
