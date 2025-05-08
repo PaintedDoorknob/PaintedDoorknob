@@ -11,15 +11,21 @@ function createPostElement(post) {
       <input type="text" placeholder="Write a comment..." class="comment-input" />
       <button class="submit-comment">Submit</button>
     </div>
-    <div class="comments-list"></div>
+    <div class="comments-list">
+      ${post.comments && post.comments.length
+        ? post.comments.map(c => `<div class="comment"><strong>${c.username}</strong>: ${c.text}</div>`).join('')
+        : '<div class="no-comments">No comments yet.</div>'
+      }
+    </div>
   `;
 
   const commentBtn = postDiv.querySelector('.comment-btn');
   const commentArea = postDiv.querySelector('.comment-area');
   const submitBtn = postDiv.querySelector('.submit-comment');
   const commentInput = postDiv.querySelector('.comment-input');
+  const commentsList = postDiv.querySelector('.comments-list');
 
-  // Toggle comment input
+  // Toggle comment input area
   commentBtn.addEventListener('click', () => {
     commentArea.style.display = commentArea.style.display === 'none' ? 'block' : 'none';
   });
@@ -44,16 +50,36 @@ function createPostElement(post) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ comment, username })
     })
-    .then(res => {
-      if (res.ok) {
-        commentInput.value = "";
-        alert("Comment posted!");
-        // You can also auto-update the comment list here
-      } else {
-        alert("Failed to post comment.");
-      }
-    });
+    .then(res => res.json())
+    .then(data => {
+      commentInput.value = "";
+
+      const newComment = document.createElement('div');
+      newComment.classList.add('comment');
+      newComment.innerHTML = `<strong>${username}</strong>: ${comment}`;
+      commentsList.appendChild(newComment);
+
+      const noCommentsMsg = commentsList.querySelector('.no-comments');
+      if (noCommentsMsg) noCommentsMsg.remove();
+    })
+    .catch(() => alert("Failed to post comment."));
   });
 
   return postDiv;
 }
+
+function loadPosts() {
+  fetch('/api/posts')
+    .then(res => res.json())
+    .then(posts => {
+      const container = document.getElementById('forum-posts');
+      container.innerHTML = '';
+      posts.forEach(post => {
+        const postElement = createPostElement(post);
+        container.appendChild(postElement);
+      });
+    });
+}
+
+// Load posts when the page loads
+document.addEventListener('DOMContentLoaded', loadPosts);
