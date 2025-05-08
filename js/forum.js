@@ -5,7 +5,7 @@ function createPostElement(post) {
   postDiv.innerHTML = `
     <h3>${post.title}</h3>
     <p>${post.content}</p>
-    <small>By ${post.username}</small>
+    <small>By ${post.username} • ${new Date(post.createdAt).toLocaleString()}</small>
     <button class="comment-btn">Comment</button>
     <div class="comment-area" style="display: none;">
       <input type="text" placeholder="Write a comment..." class="comment-input" />
@@ -13,7 +13,10 @@ function createPostElement(post) {
     </div>
     <div class="comments-list">
       ${post.comments && post.comments.length
-        ? post.comments.map(c => `<div class="comment"><strong>${c.username}</strong>: ${c.text}</div>`).join('')
+        ? post.comments.map(c => `
+            <div class="comment">
+              <strong>${c.username}</strong>: ${c.comment} <small>${new Date(c.createdAt).toLocaleString()}</small>
+            </div>`).join('')
         : '<div class="no-comments">No comments yet.</div>'
       }
     </div>
@@ -25,12 +28,10 @@ function createPostElement(post) {
   const commentInput = postDiv.querySelector('.comment-input');
   const commentsList = postDiv.querySelector('.comments-list');
 
-  // Toggle comment input area
   commentBtn.addEventListener('click', () => {
     commentArea.style.display = commentArea.style.display === 'none' ? 'block' : 'none';
   });
 
-  // Submit comment
   submitBtn.addEventListener('click', () => {
     const comment = commentInput.value.trim();
     const username = localStorage.getItem('username');
@@ -50,19 +51,19 @@ function createPostElement(post) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ comment, username })
     })
-    .then(res => res.json())
-    .then(data => {
-      commentInput.value = "";
+      .then(res => res.json())
+      .then(data => {
+        commentInput.value = "";
 
-      const newComment = document.createElement('div');
-      newComment.classList.add('comment');
-      newComment.innerHTML = `<strong>${username}</strong>: ${comment}`;
-      commentsList.appendChild(newComment);
+        const newComment = document.createElement('div');
+        newComment.classList.add('comment');
+        newComment.innerHTML = `<strong>${username}</strong>: ${comment} <small>${new Date(data.createdAt).toLocaleString()}</small>`;
+        commentsList.appendChild(newComment);
 
-      const noCommentsMsg = commentsList.querySelector('.no-comments');
-      if (noCommentsMsg) noCommentsMsg.remove();
-    })
-    .catch(() => alert("Failed to post comment."));
+        const noCommentsMsg = commentsList.querySelector('.no-comments');
+        if (noCommentsMsg) noCommentsMsg.remove();
+      })
+      .catch(() => alert("Failed to post comment."));
   });
 
   return postDiv;
@@ -74,12 +75,44 @@ function loadPosts() {
     .then(posts => {
       const container = document.getElementById('forum-posts');
       container.innerHTML = '';
-      posts.forEach(post => {
+      posts.reverse().forEach(post => {
         const postElement = createPostElement(post);
         container.appendChild(postElement);
       });
     });
 }
 
-// Load posts when the page loads
-document.addEventListener('DOMContentLoaded', loadPosts);
+function handlePostForm() {
+  const form = document.getElementById('post-form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const title = document.getElementById('post-title').value.trim();
+    const content = document.getElementById('post-content').value.trim();
+    const username = localStorage.getItem('username') || 'Anonymous';
+
+    if (!title || !content) {
+      alert('Title and content are required.');
+      return;
+    }
+
+    fetch('/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, content, username })
+    })
+      .then(res => res.json())
+      .then(post => {
+        const container = document.getElementById('forum-posts');
+        container.prepend(createPostElement(post));
+        form.reset();
+      })
+      .catch(() => alert("Failed to create post."));
+  });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadPosts();
+  handlePostForm();
+});
