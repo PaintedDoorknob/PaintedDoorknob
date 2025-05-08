@@ -1,31 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('form');
+  const form = document.getElementById('postForm');
 
-  form.addEventListener('submit', event => {
-    event.preventDefault();
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-    const title = form.title.value.trim();
-    const content = form.content.value.trim();
-    const username = localStorage.getItem('username') || 'Anonymous';
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
+    const imageInput = document.getElementById('image');
+    const username = localStorage.getItem('username') || "Anonymous";
 
     if (!title || !content) {
-      alert('Please fill in both title and content.');
+      alert("Title and content are required.");
       return;
     }
 
     const post = {
-      id: Date.now(), // Unique ID
+      id: Date.now(),
       title,
       content,
       username,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      image: null // will set below if needed
     };
 
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    posts.push(post);
-    localStorage.setItem('posts', JSON.stringify(posts));
-
-    // Redirect to home page to view the new post
-    window.location.href = 'home.html';
+    const reader = new FileReader();
+    if (imageInput.files && imageInput.files[0]) {
+      reader.onload = function (event) {
+        post.image = event.target.result;
+        savePost(post);
+      };
+      reader.readAsDataURL(imageInput.files[0]); // convert to base64
+    } else {
+      savePost(post);
+    }
   });
+
+  function savePost(post) {
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.unshift(post); // newest post on top
+    localStorage.setItem('posts', JSON.stringify(posts));
+    alert("Post created!");
+    window.location.href = "index.html"; // Go back to forum view
+  }
 });
