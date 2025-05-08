@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const userLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-  const username = localStorage.getItem('username') || 'User';
+  const userLoggedIn = localStorage.getItem('userLoggedIn');
 
   const headerHTML = `
     <header>
@@ -14,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ${userLoggedIn ? `
             <li><a href="profile.html">Profile</a></li>
             <li><a href="post.html">Post</a></li>
-            <li><button id="logout-btn" class="nav-btn">Log Out</button></li>
           ` : `
             <li><a href="signup.html">Sign Up</a></li>
             <li><a href="login.html">Log In</a></li>
@@ -25,13 +23,4 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
 
   document.body.insertAdjacentHTML('afterbegin', headerHTML);
-
-  if (userLoggedIn) {
-    const logoutBtn = document.getElementById('logout-btn');
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('userLoggedIn');
-      localStorage.removeItem('username');
-      window.location.href = 'index.html';
-    });
-  }
 });
