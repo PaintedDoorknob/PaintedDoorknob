@@ -129,34 +129,28 @@
   </footer>
 
   <script>
-    // Example username setup (can be from localStorage/session/etc.)
-    const username = localStorage.getItem('username') || 'User';
-    document.getElementById('username-display').textContent = username;
+  // Show username
+  const username = localStorage.getItem('username') || 'User';
+  document.getElementById('username-display').textContent = username;
 
-    // Fetch recent posts
-    fetch('/api/posts')
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById('posts-container');
-        if (data.length === 0) {
-          container.innerHTML = "<p>No posts yet. Be the first to post!</p>";
-        } else {
-          data.slice().reverse().forEach(post => {
-            const postEl = document.createElement('div');
-            postEl.className = 'post-card';
-            postEl.innerHTML = `
-              <h3>${post.title}</h3>
-              <p>${post.content}</p>
-              <small>By ${post.username} on ${new Date(post.createdAt).toLocaleString()}</small>
-            `;
-            container.appendChild(postEl);
-          });
-        }
-      })
-      .catch(err => {
-        console.error('Failed to load posts:', err);
-        document.getElementById('posts-container').innerHTML = "<p>Error loading posts.</p>";
-      });
-  </script>
+  // Load posts from localStorage
+  const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+  const container = document.getElementById('posts-container');
+
+  if (posts.length === 0) {
+    container.innerHTML = "<p>No posts yet. Be the first to post!</p>";
+  } else {
+    posts.slice().reverse().forEach(post => {
+      const postEl = document.createElement('div');
+      postEl.className = 'post-card';
+      postEl.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${post.content}</p>
+        <small>By ${post.username} on ${new Date(post.createdAt).toLocaleString()}</small>
+      `;
+      container.appendChild(postEl);
+    });
+  }
+</script>
 </body>
 </html>
