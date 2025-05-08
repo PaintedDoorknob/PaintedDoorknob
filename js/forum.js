@@ -1,48 +1,59 @@
-document.getElementById('create-post-form').addEventListener('submit', function(event) {
-  event.preventDefault();
+function createPostElement(post) {
+  const postDiv = document.createElement('div');
+  postDiv.classList.add('post');
 
-  // Get form input values
-  const title = document.getElementById('post-title').value;
-  const content = document.getElementById('post-content').value;
+  postDiv.innerHTML = `
+    <h3>${post.title}</h3>
+    <p>${post.content}</p>
+    <small>By ${post.username}</small>
+    <button class="comment-btn">Comment</button>
+    <div class="comment-area" style="display: none;">
+      <input type="text" placeholder="Write a comment..." class="comment-input" />
+      <button class="submit-comment">Submit</button>
+    </div>
+    <div class="comments-list"></div>
+  `;
 
-  // Get the username from localStorage (which was set during login)
-  const username = localStorage.getItem('username');
-  
-  if (!username) {
-    alert('You must be logged in to post!');
-    return;
-  }
+  const commentBtn = postDiv.querySelector('.comment-btn');
+  const commentArea = postDiv.querySelector('.comment-area');
+  const submitBtn = postDiv.querySelector('.submit-comment');
+  const commentInput = postDiv.querySelector('.comment-input');
 
-  if (title && content) {
-    // Create the new post object
-    const newPost = { title, content, username };
+  // Toggle comment input
+  commentBtn.addEventListener('click', () => {
+    commentArea.style.display = commentArea.style.display === 'none' ? 'block' : 'none';
+  });
 
-    // Send the new post data to the server (API call)
-    fetch('http://localhost:3000/api/posts', {
+  // Submit comment
+  submitBtn.addEventListener('click', () => {
+    const comment = commentInput.value.trim();
+    const username = localStorage.getItem('username');
+
+    if (!username) {
+      alert("You must be logged in to comment.");
+      return;
+    }
+
+    if (comment === "") {
+      alert("Comment cannot be empty.");
+      return;
+    }
+
+    fetch(`/api/posts/${post._id}/comment`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newPost)
+      body: JSON.stringify({ comment, username })
     })
-    .then(response => response.json())
-    .then(data => {
-      // Handle the response (e.g., display the new post on the page)
-      const forumPostsContainer = document.querySelector('.forum-posts');
-      const postCard = document.createElement('div');
-      postCard.classList.add('forum-card');
-      postCard.innerHTML = `
-        <h3>${data.title}</h3>
-        <p>${data.content}</p>
-        <small>Posted by ${data.username} on ${new Date(data.createdAt).toLocaleString()}</small>
-      `;
-      forumPostsContainer.appendChild(postCard);
-
-      // Reset the form after submission
-      document.getElementById('create-post-form').reset();
-    })
-    .catch(err => {
-      console.error('Error creating post:', err);
+    .then(res => {
+      if (res.ok) {
+        commentInput.value = "";
+        alert("Comment posted!");
+        // You can also auto-update the comment list here
+      } else {
+        alert("Failed to post comment.");
+      }
     });
-  } else {
-    alert('Please fill in both the title and content fields.');
-  }
-});
+  });
+
+  return postDiv;
+}
