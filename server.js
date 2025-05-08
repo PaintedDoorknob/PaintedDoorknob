@@ -1,29 +1,61 @@
 // Import dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
-const posts = []; // Example posts array (replace with a database)
+const posts = []; // In-memory array (resets if server restarts)
 
-// Use middleware to parse JSON
+// Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
-// Define the POST route to create a new post
+// Create a new post
 app.post('/api/posts', (req, res) => {
-  const { title, content } = req.body;
+  const { title, content, username } = req.body;
 
-  // Validate the request data (you can add more checks here)
-  if (!title || !content) {
-    return res.status(400).json({ error: 'Title and content are required' });
+  if (!title || !content || !username) {
+    return res.status(400).json({ error: 'Title, content, and username are required.' });
   }
 
-  // Create a new post object
-  const newPost = { title, content, username: 'User', createdAt: new Date() };
+  const newPost = {
+    _id: Date.now().toString(),
+    title,
+    content,
+    username,
+    createdAt: new Date(),
+    comments: []
+  };
 
-  // Add the new post to the posts array (or save it to the database)
   posts.push(newPost);
-
-  // Send the new post back in the response with a success status code
   res.status(201).json(newPost);
+});
+
+// Get all posts (including comments)
+app.get('/api/posts', (req, res) => {
+  res.json(posts);
+});
+
+// Add a comment to a specific post
+app.post('/api/posts/:id/comment', (req, res) => {
+  const { comment, username } = req.body;
+  const post = posts.find(p => p._id === req.params.id);
+
+  if (!post) {
+    return res.status(404).json({ error: 'Post not found' });
+  }
+
+  if (!comment || !username) {
+    return res.status(400).json({ error: 'Comment and username are required.' });
+  }
+
+  const newComment = {
+    comment,
+    username,
+    createdAt: new Date()
+  };
+
+  post.comments.push(newComment);
+  res.status(201).json(newComment);
 });
 
 // Start the server
