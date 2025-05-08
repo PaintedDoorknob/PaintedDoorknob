@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ` : `
             <li><a href="signup.html">Sign Up</a></li>
             <li><a href="login.html">Log In</a></li>
+            <li><a href="forum.html">Forum</a></li>
           `}
         </ul>
       </nav>
