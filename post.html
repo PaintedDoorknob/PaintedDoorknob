@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="js/header.js" defer></script>
   <meta charset="UTF-8">
   <title>Create Post</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/header.js" defer></script>
+  <script src="js/post.js" defer></script> <!-- Add this line -->
 </head>
 <body>
   <main>
     <h1>Create a Post</h1>
-    <form action="/submit-post" method="POST" enctype="multipart/form-data">
-      <label>Title:<br><input type="text" name="title" required></label><br><br>
-      <label>Content:<br><textarea name="content" rows="5" required></textarea></label><br><br>
-      <label>Image (optional):<br><input type="file" name="image" accept="image/*"></label><br><br>
-      <button type="submit">Post</button>
+
+    <!-- LocalStorage-based form -->
+    <form id="post-form">
+      <label>Title:<br>
+        <input type="text" id="post-title" required>
+      </label><br><br>
+
+      <label>Content:<br>
+        <textarea id="post-content" rows="5" required></textarea>
+      </label><br><br>
+
+      <label>Image (optional):<br>
+        <input type="file" id="post-image" accept="image/*" disabled>
+        <!-- Disabled since image uploading requires backend -->
+      </label><br><br>
+
+      <button type="submit">Publish</button>
     </form>
+
+    <div id="confirmation-message" style="margin-top: 20px;"></div>
   </main>
 </body>
 </html>
