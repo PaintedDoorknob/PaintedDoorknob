@@ -58,11 +58,7 @@ app.post('/api/posts/:id/comment', (req, res) => {
   res.status(201).json(newComment);
 });
 
-// Start the server
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
-
+// Start the server (only once!)
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
