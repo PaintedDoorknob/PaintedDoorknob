@@ -2,49 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forum - PaintedDoorKnob</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css" />
   <script src="js/header.js" defer></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #1a1a1a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .forum-container {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    #post-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    #post-form input,
+    #post-form textarea {
+      background: #262626;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    #post-form button {
+      background: #3b82f6;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #post-form button:hover {
+      background: #2563eb;
+    }
+
+    .post-card {
+      background: #2e2e2e;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.3);
+    }
+
+    .post-card h3 {
+      margin: 0 0 10px 0;
+    }
+
+    .post-card small {
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
+  <!-- Header from header.js -->
+  <div class="forum-container">
+    <h1>Forum</h1>
+    <form id="post-form">
+      <input type="text" id="post-title" placeholder="Post title" required />
+      <textarea id="post-content" rows="5" placeholder="Write your post here..." required></textarea>
+      <button type="submit">Publish</button>
+    </form>
 
-  <!-- Header -->
-  <header class="main-header">
-    <nav>
-      <script src="js/header.js" defer></script>
-      <div class="logo">
-        <img src="logo.png" alt="PaintedDoorKnob Logo">
-      </div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="forum.html" class="active">Forum</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="login.html">Login</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Forum Section -->
-  <main class="forum-section">
-
-    <!-- Forum Controls -->
-    <div class="forum-controls">
-      <form class="forum-search-form">
-        <input type="text" placeholder="Search posts..." name="search" />
-        <button type="submit"><span>🔍</span></button>
-      </form>
-      <a href="create-post.html" class="create-post-button">+ New Post</a>
+    <div id="posts-container">
+      <!-- Posts will appear here -->
     </div>
+  </div>
 
-    <!-- Forum Posts -->
-    <div class="forum-posts">
-      <!-- Posts will be inserted here -->
-    </div>
+  <script>
+    // Save post to localStorage
+    function savePost(title, content) {
+      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+      const newPost = {
+        title,
+        content,
+        username: localStorage.getItem("username") || "Anonymous",
+        createdAt: new Date().toISOString()
+      };
+      posts.push(newPost);
+      localStorage.setItem("posts", JSON.stringify(posts));
+    }
 
-  </main>
+    // Display all posts
+    function showPosts() {
+      const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+      const container = document.getElementById("posts-container");
+      container.innerHTML = "";
+      posts.reverse().forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post-card";
+        div.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.content}</p>
+          <small>By ${post.username} on ${new Date(post.createdAt).toLocaleString()}</small>
+        `;
+        container.appendChild(div);
+      });
+    }
 
-  <script src="js/forum.js"></script>
+    // Form handler
+    document.getElementById("post-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const title = document.getElementById("post-title").value;
+      const content = document.getElementById("post-content").value;
+      savePost(title, content);
+      showPosts();
+      e.target.reset(); // clear form
+    });
+
+    // Load posts on page load
+    document.addEventListener("DOMContentLoaded", showPosts);
+  </script>
 </body>
 </html>
