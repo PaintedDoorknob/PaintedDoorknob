@@ -38,20 +38,31 @@
       margin: 0;
     }
 
-    .create-post-btn {
-      background-color: #3b82f6;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
+    .button-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      justify-content: center;
+      width: 100%;
+      flex-wrap: wrap;
     }
 
-    .create-post-btn:hover {
+    .create-post-btn, .browse-forum-btn {
+      padding: 12px 24px;
+      font-size: 1rem;
       background-color: #2563eb;
+      color: white;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .create-post-btn:hover, .browse-forum-btn:hover {
+      background-color: #1e40af;
     }
 
     .recent-posts {
@@ -98,10 +109,12 @@
   <main class="dashboard-container">
     <div class="dashboard-header">
       <h1>Welcome back, <span id="username-display">User</span>!</h1>
-      <a href="post.html">
-        <button class="create-post-btn">Create a Post</button>
-      </a>
     </div>
+
+    <section class="button-group">
+      <a href="forum.html" class="browse-forum-btn">Browse Forum</a>
+      <a href="post.html" class="create-post-btn">Create a Post</a>
+    </section>
 
     <section class="recent-posts">
       <h2>Recent Posts</h2>
