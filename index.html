@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PaintedDoorKnob</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
   <script src="js/app.js" defer></script>
   <script src="js/header.js" defer></script>
   <style>
-    /* General Styles */
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
@@ -18,7 +17,6 @@
     }
 
     header {
-      <script src="js/header.js" defer></script>
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -27,7 +25,6 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
-    /* Logo Container */
     .logo-container {
       display: flex;
       align-items: center;
@@ -67,7 +64,6 @@
       font-weight: 400;
     }
 
-    /* Navigation links */
     nav {
       display: flex;
       align-items: center;
@@ -107,7 +103,7 @@
         <li><a href="login.html">Log In</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li><a href="chatbot.html">Chatbot</a></li>
-        <!-- Post button appears here if logged in -->
+        <!-- Post button will appear here if logged in -->
       </ul>
     </nav>
   </header>
@@ -116,7 +112,7 @@
     <section class="hero">
       <div class="hero-content">
         <h1>Welcome to PaintedDoorKnob!</h1>
-        <p>Join a community where you can discuss, share, and learn. <br> Explore a world of conversations and connections.</p>
+        <p>Join a community where you can discuss, share, and learn.<br>Explore a world of conversations and connections.</p>
         <a href="signup.html" class="cta-button">Get Started</a>
       </div>
     </section>
@@ -145,9 +141,8 @@
   </footer>
 
   <script>
-    // Show the Post button only if logged in
     const navLinks = document.getElementById('nav-links');
-    const isLoggedIn = localStorage.getItem('userLoggedIn'); // true/false string
+    const isLoggedIn = localStorage.getItem('userLoggedIn');
 
     if (isLoggedIn === 'true') {
       const postItem = document.createElement('li');
