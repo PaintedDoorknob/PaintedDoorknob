@@ -286,3 +286,29 @@ footer {
   border-radius: 10px;
   margin: 10px 0;
 }
+.comment-area {
+  margin-top: 10px;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 6px;
+  background: #1f1f1f;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 6px;
+}
+
+.submit-comment {
+  background: #10b981;
+  border: none;
+  padding: 8px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-comment:hover {
+  background: #059669;
+}
