@@ -46,10 +46,25 @@ function createPostElement(post) {
       return;
     }
 
-    fetch(`/api/posts/${post._id}/comment`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ comment, username })
+    fetch('https://painteddoorknob.onrender.com/api/posts', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: postTitle,
+    content: postContent,
+    username: currentUsername
+  })
+})
+.then(res => res.json())
+.then(data => {
+  console.log('Post created:', data);
+  // optionally refresh the post list or clear the form
+})
+.catch(err => {
+  console.error('Error creating post:', err);
+});
     })
       .then(res => res.json())
       .then(data => {
@@ -96,10 +111,25 @@ function handlePostForm() {
       return;
     }
 
-    fetch('/api/posts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, username })
+    fetch('https://painteddoorknob.onrender.com/api/posts', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: postTitle,
+    content: postContent,
+    username: currentUsername
+  })
+})
+.then(res => res.json())
+.then(data => {
+  console.log('Post created:', data);
+  // optionally refresh the post list or clear the form
+})
+.catch(err => {
+  console.error('Error creating post:', err);
+});
     })
       .then(res => res.json())
       .then(post => {
