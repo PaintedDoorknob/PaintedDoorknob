@@ -49,13 +49,27 @@ app.post('/api/posts/:id/comment', (req, res) => {
   }
 
   const newComment = {
+    _id: Date.now().toString(),
     comment,
     username,
-    createdAt: new Date()
+    createdAt: new Date(),
+    likes: 0 // New likes field for comments
   };
 
   post.comments.push(newComment);
   res.status(201).json(newComment);
+});
+
+// Like a comment on a specific post
+app.post('/api/posts/:postId/comment/:commentId/like', (req, res) => {
+  const post = posts.find(p => p._id === req.params.postId);
+  if (!post) return res.status(404).json({ error: 'Post not found' });
+
+  const comment = post.comments.find(c => c._id === req.params.commentId);
+  if (!comment) return res.status(404).json({ error: 'Comment not found' });
+
+  comment.likes += 1;
+  res.json({ likes: comment.likes });
 });
 
 // Start the server (only once!)
