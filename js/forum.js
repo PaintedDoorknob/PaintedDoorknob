@@ -1,72 +1,75 @@
-document.addEventListener("DOMContentLoaded", loadPosts);
+// Load posts when the page is ready
+window.onload = loadPosts;
 
+// Function to fetch and display posts
 function loadPosts() {
-  fetch('https://painteddoorknob.onrender.com/api/posts') // Fetch posts from backend
-    .then(res => res.json()) // Parse the JSON response
+  fetch('/api/posts')
+    .then(response => response.json())
     .then(posts => {
-      const forumPostsDiv = document.getElementById('forum-posts');
-      forumPostsDiv.innerHTML = ''; // Clear existing posts
+      const forumPostsContainer = document.getElementById('forum-posts');
+      forumPostsContainer.innerHTML = '';
 
       posts.forEach(post => {
         const postDiv = document.createElement('div');
         postDiv.classList.add('post');
+        
         postDiv.innerHTML = `
           <h3>${post.title}</h3>
-          <small>By ${post.username} - ${new Date(post.createdAt).toLocaleString()}</small>
+          <small>Posted by ${post.username} on ${new Date(post.createdAt).toLocaleString()}</small>
           <p>${post.content}</p>
-          <div class="comment-area" id="comments-${post._id}">
-            <input class="comment-input" id="comment-input-${post._id}" placeholder="Add a comment..." />
-            <button class="submit-comment" onclick="submitComment(event, '${post._id}')">Comment</button>
-            <div class="no-comments">No comments yet</div>
+          <div class="comment-area">
+            <input class="comment-input" type="text" placeholder="Write a comment..." id="comment-input-${post._id}">
+            <button class="submit-comment" onclick="submitComment('${post._id}')">Comment</button>
+          </div>
+          <div class="comments-container" id="comments-container-${post._id}">
+            <!-- Comments will be loaded here -->
           </div>
         `;
-        forumPostsDiv.appendChild(postDiv);
 
-        // Load comments for the post
+        // Display the comments for this post
         post.comments.forEach(comment => {
           const commentDiv = document.createElement('div');
           commentDiv.classList.add('comment');
           commentDiv.innerHTML = `
-            <p><strong>${comment.username}</strong>: ${comment.comment}</p>
-            <button class="like-button" onclick="likeComment('${post._id}', '${comment._id}')">❤️ Like</button>
-            <span class="likes-count">${comment.likes} Likes</span>
+            <p><strong>${comment.username}:</strong> ${comment.comment}</p>
+            <button onclick="likeComment('${post._id}', '${comment._id}')">Like (${comment.likes})</button>
           `;
-          document.getElementById(`comments-${post._id}`).appendChild(commentDiv);
+          document.getElementById(`comments-container-${post._id}`).appendChild(commentDiv);
         });
+
+        forumPostsContainer.appendChild(postDiv);
       });
     });
 }
 
-function submitComment(event, postId) {
+// Function to submit a comment
+function submitComment(postId) {
   const commentInput = document.getElementById(`comment-input-${postId}`);
-  const comment = commentInput.value;
-  const username = 'Username'; // Replace with actual user info
+  const commentText = commentInput.value;
+  const username = 'User123'; // Replace this with the actual username (e.g., from session/localStorage)
 
-  if (!comment.trim()) return;
-
-  fetch(`https://painteddoorknob.onrender.com/api/posts/${postId}/comment`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      comment,
-      username
+  if (commentText) {
+    fetch(`/api/posts/${postId}/comment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ comment: commentText, username })
     })
-  })
-  .then(res => res.json())
-  .then(newComment => {
-    commentInput.value = ''; // Clear input field
-    loadPosts(); // Reload posts with the new comment
-  });
+      .then(response => response.json())
+      .then(comment => {
+        loadPosts(); // Reload posts after a new comment is added
+      });
+
+    commentInput.value = ''; // Clear the input field after submission
+  }
 }
 
+// Function to like a comment
 function likeComment(postId, commentId) {
-  fetch(`https://painteddoorknob.onrender.com/api/posts/${postId}/comment/${commentId}/like`, {
+  fetch(`/api/posts/${postId}/comment/${commentId}/like`, {
     method: 'POST'
   })
-  .then(res => res.json())
-  .then(updatedComment => {
-    loadPosts(); // Reload posts to reflect the updated like count
-  });
+    .then(response => response.json())
+    .then(data => {
+      loadPosts(); // Reload posts after a like is added
+    });
 }
