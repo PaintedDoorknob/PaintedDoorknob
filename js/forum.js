@@ -1,148 +1,94 @@
-function createPostElement(post) {
-  const postDiv = document.createElement('div');
-  postDiv.classList.add('post');
+document.addEventListener('DOMContentLoaded', () => {
+  loadPosts(); // Load posts when page is loaded
 
-  postDiv.innerHTML = `
-    <h3>${post.title}</h3>
-    <p>${post.content}</p>
-    <small>By ${post.username} • ${new Date(post.createdAt).toLocaleString()}</small>
-    <button class="comment-btn">Comment</button>
-    <div class="comment-area" style="display: none;">
-      <input type="text" placeholder="Write a comment..." class="comment-input" />
-      <button class="submit-comment">Submit</button>
-    </div>
-    <div class="comments-list">
-      ${post.comments && post.comments.length
-        ? post.comments.map(c => `
-            <div class="comment">
-              <strong>${c.username}</strong>: ${c.comment} <small>${new Date(c.createdAt).toLocaleString()}</small>
-            </div>`).join('')
-        : '<div class="no-comments">No comments yet.</div>'
-      }
-    </div>
-  `;
+  // Handle form submission for creating a new post
+  const postForm = document.getElementById('post-form');
+  postForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-  const commentBtn = postDiv.querySelector('.comment-btn');
-  const commentArea = postDiv.querySelector('.comment-area');
-  const submitBtn = postDiv.querySelector('.submit-comment');
-  const commentInput = postDiv.querySelector('.comment-input');
-  const commentsList = postDiv.querySelector('.comments-list');
-
-  commentBtn.addEventListener('click', () => {
-    commentArea.style.display = commentArea.style.display === 'none' ? 'block' : 'none';
-  });
-
-  submitBtn.addEventListener('click', () => {
-    const comment = commentInput.value.trim();
-    const username = localStorage.getItem('username');
-
-    if (!username) {
-      alert("You must be logged in to comment.");
-      return;
-    }
-
-    if (comment === "") {
-      alert("Comment cannot be empty.");
-      return;
-    }
+    const title = document.getElementById('post-title').value;
+    const content = document.getElementById('post-content').value;
+    const username = 'User'; // Replace with actual logged-in user name
 
     fetch('https://painteddoorknob.onrender.com/api/posts', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    title: postTitle,
-    content: postContent,
-    username: currentUsername
-  })
-})
-.then(res => res.json())
-.then(data => {
-  console.log('Post created:', data);
-  // optionally refresh the post list or clear the form
-})
-.catch(err => {
-  console.error('Error creating post:', err);
-});
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, content, username })
     })
       .then(res => res.json())
       .then(data => {
-        commentInput.value = "";
-
-        const newComment = document.createElement('div');
-        newComment.classList.add('comment');
-        newComment.innerHTML = `<strong>${username}</strong>: ${comment} <small>${new Date(data.createdAt).toLocaleString()}</small>`;
-        commentsList.appendChild(newComment);
-
-        const noCommentsMsg = commentsList.querySelector('.no-comments');
-        if (noCommentsMsg) noCommentsMsg.remove();
-      })
-      .catch(() => alert("Failed to post comment."));
+        loadPosts(); // Reload posts after adding new post
+        postForm.reset(); // Clear the form
+      });
   });
+});
 
-  return postDiv;
-}
-
+// Load all posts with comments and likes
 function loadPosts() {
-  fetch('/api/posts')
+  fetch('https://painteddoorknob.onrender.com/api/posts')
     .then(res => res.json())
     .then(posts => {
-      const container = document.getElementById('forum-posts');
-      container.innerHTML = '';
-      posts.reverse().forEach(post => {
-        const postElement = createPostElement(post);
-        container.appendChild(postElement);
+      const forumPostsDiv = document.getElementById('forum-posts');
+      forumPostsDiv.innerHTML = ''; // Clear existing posts
+
+      posts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.classList.add('post');
+        postDiv.innerHTML = `
+          <h3>${post.title}</h3>
+          <small>By ${post.username} - ${new Date(post.createdAt).toLocaleString()}</small>
+          <p>${post.content}</p>
+          <div class="comment-area" id="comments-${post._id}">
+            <input class="comment-input" id="comment-input-${post._id}" placeholder="Add a comment..." />
+            <button class="submit-comment" onclick="submitComment(event, '${post._id}')">Comment</button>
+            <div class="no-comments">No comments yet</div>
+          </div>
+        `;
+        forumPostsDiv.appendChild(postDiv);
+
+        // Load comments for the post
+        post.comments.forEach(comment => {
+          const commentDiv = document.createElement('div');
+          commentDiv.classList.add('comment');
+          commentDiv.innerHTML = `
+            <p><strong>${comment.username}</strong>: ${comment.comment}</p>
+            <button class="like-button" onclick="likeComment('${post._id}', '${comment._id}')">❤️ Like</button>
+            <span class="likes-count">${comment.likes} Likes</span>
+          `;
+          document.getElementById(`comments-${post._id}`).appendChild(commentDiv);
+        });
       });
     });
 }
 
-function handlePostForm() {
-  const form = document.getElementById('post-form');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+// Submit a comment to a post
+function submitComment(event, postId) {
+  const commentInput = document.getElementById(`comment-input-${postId}`);
+  const comment = commentInput.value;
+  const username = 'User'; // Replace with actual logged-in user name
 
-    const title = document.getElementById('post-title').value.trim();
-    const content = document.getElementById('post-content').value.trim();
-    const username = localStorage.getItem('username') || 'Anonymous';
+  if (comment.trim() === '') return;
 
-    if (!title || !content) {
-      alert('Title and content are required.');
-      return;
-    }
-
-    fetch('https://painteddoorknob.onrender.com/api/posts', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    title: postTitle,
-    content: postContent,
-    username: currentUsername
+  fetch(`https://painteddoorknob.onrender.com/api/posts/${postId}/comment`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ comment, username })
   })
-})
-.then(res => res.json())
-.then(data => {
-  console.log('Post created:', data);
-  // optionally refresh the post list or clear the form
-})
-.catch(err => {
-  console.error('Error creating post:', err);
-});
-    })
-      .then(res => res.json())
-      .then(post => {
-        const container = document.getElementById('forum-posts');
-        container.prepend(createPostElement(post));
-        form.reset();
-      })
-      .catch(() => alert("Failed to create post."));
-  });
+    .then(res => res.json())
+    .then(data => {
+      loadPosts(); // Reload posts to show new comment
+    });
+
+  commentInput.value = ''; // Clear the comment input
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  loadPosts();
-  handlePostForm();
-});
+// Like a comment
+function likeComment(postId, commentId) {
+  fetch(`https://painteddoorknob.onrender.com/api/posts/${postId}/comment/${commentId}/like`, {
+    method: 'POST'
+  })
+    .then(res => res.json())
+    .then(data => {
+      loadPosts(); // Reload posts to show updated likes count
+    });
+}
