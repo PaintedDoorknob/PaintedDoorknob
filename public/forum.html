@@ -1,0 +1,30 @@
+async function loadPosts() {
+  const container = document.getElementById('post-container');
+  container.innerHTML = '';
+
+  try {
+    const response = await fetch('/api/posts');
+    const posts = await response.json();
+
+    posts.forEach(post => {
+      const postDiv = document.createElement('div');
+      postDiv.classList.add('feature');
+
+      postDiv.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${post.content}</p>
+        <p><em>Posted by ${post.username}</em></p>
+        <div class="comment-area">
+          <input class="comment-input" placeholder="Add a comment..." />
+          <button class="submit-comment">Send</button>
+        </div>
+      `;
+
+      container.appendChild(postDiv);
+    });
+  } catch (err) {
+    container.innerHTML = '<p>Failed to load posts.</p>';
+  }
+}
+
+loadPosts();
