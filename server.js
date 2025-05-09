@@ -23,7 +23,7 @@ app.post('/api/posts', (req, res) => {
     content,
     username,
     createdAt: new Date(),
-    comments: []
+    comments: [] // Initialize with no comments
   };
 
   posts.push(newPost);
@@ -53,7 +53,7 @@ app.post('/api/posts/:id/comment', (req, res) => {
     comment,
     username,
     createdAt: new Date(),
-    likes: 0 // New likes field for comments
+    likes: 0 // Initial like count for new comments
   };
 
   post.comments.push(newComment);
@@ -68,7 +68,7 @@ app.post('/api/posts/:postId/comment/:commentId/like', (req, res) => {
   const comment = post.comments.find(c => c._id === req.params.commentId);
   if (!comment) return res.status(404).json({ error: 'Comment not found' });
 
-  comment.likes += 1;
+  comment.likes += 1; // Increment the like count for the comment
   res.json({ likes: comment.likes });
 });
 
