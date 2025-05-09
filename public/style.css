@@ -4,11 +4,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
   background-color: #0f0f0f;
   color: #eaeaea;
   line-height: 1.6;
+  scroll-behavior: smooth;
 }
 
 /* ========= HEADER ========= */
@@ -21,13 +23,14 @@ header {
   border-bottom: 1px solid #2e2e2e;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .logo {
   font-size: 1.8rem;
   font-weight: 800;
   color: #ffffff;
+  text-decoration: none;
 }
 
 nav ul {
@@ -35,13 +38,16 @@ nav ul {
   list-style: none;
   gap: 20px;
 }
+
 nav ul li a {
   color: #d1d1d1;
   font-weight: 500;
   text-decoration: none;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
 }
+
 nav ul li a:hover {
   background-color: #1e1e1e;
   color: #57b3ff;
@@ -53,16 +59,19 @@ nav ul li a:hover {
   padding: 120px 20px 80px;
   background: linear-gradient(to right, #151515, #0f0f0f);
 }
+
 .hero h1 {
   font-size: 3rem;
   color: #ffffff;
 }
+
 .hero p {
   font-size: 1.2rem;
   color: #cfcfcf;
   max-width: 600px;
   margin: 20px auto;
 }
+
 .cta-button {
   margin-top: 24px;
   padding: 14px 28px;
@@ -73,7 +82,9 @@ nav ul li a:hover {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.2s;
 }
+
 .cta-button:hover {
   background-color: #178acb;
 }
@@ -87,23 +98,27 @@ nav ul li a:hover {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .feature {
   background: #1a1a1a;
   padding: 24px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   transition: 0.3s ease;
 }
+
 .feature:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
 }
+
 .feature h3 {
   font-size: 1.4rem;
   margin-bottom: 10px;
   color: #ffffff;
 }
+
 .feature p {
   color: #bfbfbf;
 }
@@ -116,12 +131,14 @@ form {
   margin: 40px auto;
   border-radius: 10px;
 }
+
 form h2 {
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 20px;
   color: #ffffff;
 }
+
 form input,
 form textarea {
   width: 100%;
@@ -132,6 +149,7 @@ form textarea {
   border: 1px solid #444;
   color: #fff;
 }
+
 form button {
   width: 100%;
   padding: 14px;
@@ -141,15 +159,18 @@ form button {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
+
 form button:hover {
   background: #178acb;
 }
 
-/* ========= COMMENT SECTION ========= */
+/* ========= COMMENTS ========= */
 .comment-area {
   margin-top: 20px;
 }
+
 .comment-input {
   width: 100%;
   padding: 12px;
@@ -158,6 +179,7 @@ form button:hover {
   color: #fff;
   border-radius: 6px;
 }
+
 .submit-comment {
   background: #2b9cd8;
   color: white;
@@ -166,7 +188,9 @@ form button:hover {
   border-radius: 6px;
   margin-top: 10px;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
+
 .submit-comment:hover {
   background: #178acb;
 }
@@ -187,6 +211,15 @@ footer {
   margin: 0 auto;
   padding: 0 20px;
 }
+
 .text-center {
   text-align: center;
+}
+
+.rounded {
+  border-radius: 12px;
+}
+
+.shadow {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
