@@ -1,78 +1,35 @@
-// Import dependencies
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const mongoose = require('mongoose');
 const app = express();
-const posts = []; // In-memory array (resets if server restarts)
+const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.static('public'));
 
-// Create a new post
-app.post('/api/posts', (req, res) => {
-  const { title, content, username } = req.body;
+// MongoDB setup
+mongoose.connect('mongodb://127.0.0.1:27017/painteddoorknob', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-  if (!title || !content || !username) {
-    return res.status(400).json({ error: 'Title, content, and username are required.' });
+// Post schema
+const postSchema = new mongoose.Schema({
+  title: String,
+  content: String,
+  username: String,
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Post = mongoose.model('Post', postSchema);
+
+// Public API: anyone can view posts
+app.get('/api/posts', async (req, res) => {
+  try {
+    const posts = await Post.find().sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to load posts' });
   }
-
-  const newPost = {
-    _id: Date.now().toString(),
-    title,
-    content,
-    username,
-    createdAt: new Date(),
-    comments: [] // Initialize with no comments
-  };
-
-  posts.push(newPost);
-  res.status(201).json(newPost);
 });
 
-// Get all posts (including comments)
-app.get('/api/posts', (req, res) => {
-  res.json(posts);
-});
-
-// Add a comment to a specific post
-app.post('/api/posts/:id/comment', (req, res) => {
-  const { comment, username } = req.body;
-  const post = posts.find(p => p._id === req.params.id);
-
-  if (!post) {
-    return res.status(404).json({ error: 'Post not found' });
-  }
-
-  if (!comment || !username) {
-    return res.status(400).json({ error: 'Comment and username are required.' });
-  }
-
-  const newComment = {
-    _id: Date.now().toString(),
-    comment,
-    username,
-    createdAt: new Date(),
-    likes: 0 // Initial like count for new comments
-  };
-
-  post.comments.push(newComment);
-  res.status(201).json(newComment);
-});
-
-// Like a comment on a specific post
-app.post('/api/posts/:postId/comment/:commentId/like', (req, res) => {
-  const post = posts.find(p => p._id === req.params.postId);
-  if (!post) return res.status(404).json({ error: 'Post not found' });
-
-  const comment = post.comments.find(c => c._id === req.params.commentId);
-  if (!comment) return res.status(404).json({ error: 'Comment not found' });
-
-  comment.likes += 1; // Increment the like count for the comment
-  res.json({ likes: comment.likes });
-});
-
-// Start the server (only once!)
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
