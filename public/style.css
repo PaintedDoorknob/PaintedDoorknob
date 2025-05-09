@@ -1,293 +1,192 @@
-/* =====================
-   RESET & BASE STYLES
-====================== */
+/* ========= RESET ========= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
-  background-color: #1f1f1f;
+  background-color: #0f0f0f;
   color: #eaeaea;
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
-img {
-  max-width: 100%;
-  display: block;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-a:hover {
-  color: #3fb0ff;
-}
-
-/* =====================
-   HEADER & NAVIGATION
-====================== */
+/* ========= HEADER ========= */
 header {
-  background: #2c2c2c;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  padding: 18px 0;
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
-}
-
-header nav {
+  background: #121212;
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  border-bottom: 1px solid #2e2e2e;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-header .logo {
+.logo {
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #ffffff;
-  display: flex;
-  align-items: center;
 }
 
-header ul {
+nav ul {
+  display: flex;
   list-style: none;
-  display: flex;
-  gap: 24px;
+  gap: 20px;
+}
+nav ul li a {
+  color: #d1d1d1;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+nav ul li a:hover {
+  background-color: #1e1e1e;
+  color: #57b3ff;
 }
 
-header ul li a {
-  color: #dddddd;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-header ul li a:hover {
-  color: #3fb0ff;
-}
-
-/* =====================
-   HERO SECTION
-====================== */
+/* ========= HERO SECTION ========= */
 .hero {
-  background: linear-gradient(to right, #2e2e2e, #1f1f1f);
-  padding: 140px 20px 80px;
   text-align: center;
-  color: #f5f5f5;
+  padding: 120px 20px 80px;
+  background: linear-gradient(to right, #151515, #0f0f0f);
 }
-
 .hero h1 {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  color: #ffffff;
 }
-
 .hero p {
   font-size: 1.2rem;
+  color: #cfcfcf;
   max-width: 600px;
-  margin: 0 auto 30px;
+  margin: 20px auto;
 }
-
 .cta-button {
+  margin-top: 24px;
   padding: 14px 28px;
-  background-color: #3fb0ff;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #2b9cd8;
   color: #fff;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
-
 .cta-button:hover {
-  background-color: #2496dc;
+  background-color: #178acb;
 }
 
-/* =====================
-   FEATURES SECTION
-====================== */
+/* ========= FEATURES ========= */
 .features {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
-  padding: 80px 20px;
+  gap: 32px;
+  padding: 60px 20px;
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
 }
-
 .feature {
-  background: #292929;
-  padding: 30px;
+  background: #1a1a1a;
+  padding: 24px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
 }
-
 .feature:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.4);
 }
-
-.feature i {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #3fb0ff;
-}
-
 .feature h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
+  color: #ffffff;
 }
-
 .feature p {
-  font-size: 1rem;
-  color: #cfcfcf;
+  color: #bfbfbf;
 }
 
-/* =====================
-   FORM SECTIONS
-====================== */
+/* ========= FORM ========= */
 form {
-  background: #282828;
-  padding: 40px;
-  border-radius: 10px;
+  background: #1c1c1c;
+  padding: 36px;
   max-width: 500px;
   margin: 40px auto;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
 }
-
 form h2 {
   text-align: center;
+  font-size: 1.8rem;
   margin-bottom: 20px;
-  font-size: 2rem;
-  color: #fff;
+  color: #ffffff;
 }
-
 form input,
 form textarea {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin-bottom: 20px;
-  border: none;
   border-radius: 6px;
-  background: #1f1f1f;
+  background: #0f0f0f;
+  border: 1px solid #444;
   color: #fff;
 }
-
-form input:focus,
-form textarea:focus {
-  outline: 2px solid #3fb0ff;
-}
-
 form button {
+  width: 100%;
   padding: 14px;
-  background: #3fb0ff;
+  background: #2b9cd8;
   color: white;
+  font-weight: bold;
   border: none;
   border-radius: 6px;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background 0.3s ease;
+  cursor: pointer;
 }
-
 form button:hover {
-  background: #2496dc;
+  background: #178acb;
 }
 
-/* =====================
-   FOOTER
-====================== */
+/* ========= COMMENT SECTION ========= */
+.comment-area {
+  margin-top: 20px;
+}
+.comment-input {
+  width: 100%;
+  padding: 12px;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 6px;
+}
+.submit-comment {
+  background: #2b9cd8;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.submit-comment:hover {
+  background: #178acb;
+}
+
+/* ========= FOOTER ========= */
 footer {
-  background: #1a1a1a;
-  color: #bbb;
-  padding: 30px;
+  background: #121212;
+  color: #999;
   text-align: center;
+  padding: 24px;
   font-size: 0.9rem;
+  border-top: 1px solid #2a2a2a;
 }
 
-/* =====================
-   RESPONSIVE
-====================== */
-@media (max-width: 768px) {
-  header nav {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .features {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =====================
-   UTILITIES
-====================== */
+/* ========= UTILITIES ========= */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
-
 .text-center {
   text-align: center;
-}
-
-.hidden {
-  display: none;
-}
-
-.shadow {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.rounded {
-  border-radius: 8px;
-}
-
-/* =====================
-   COMMENT SECTION
-====================== */
-.comment-area {
-  margin-top: 12px;
-}
-
-.comment-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 8px;
-  background: #1f1f1f;
-  color: white;
-  border: 1px solid #444;
-  border-radius: 6px;
-}
-
-.submit-comment {
-  background: #10b981;
-  border: none;
-  padding: 10px 16px;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-block;
-  margin-top: 8px;
-}
-
-.submit-comment:hover {
-  background: #059669;
 }
