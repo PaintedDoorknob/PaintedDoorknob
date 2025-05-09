@@ -1,32 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-  loadPosts(); // Load posts when page is loaded
+document.addEventListener("DOMContentLoaded", loadPosts);
 
-  // Handle form submission for creating a new post
-  const postForm = document.getElementById('post-form');
-  postForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const title = document.getElementById('post-title').value;
-    const content = document.getElementById('post-content').value;
-    const username = 'User'; // Replace with actual logged-in user name
-
-    fetch('https://painteddoorknob.onrender.com/api/posts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, username })
-    })
-      .then(res => res.json())
-      .then(data => {
-        loadPosts(); // Reload posts after adding new post
-        postForm.reset(); // Clear the form
-      });
-  });
-});
-
-// Load all posts with comments and likes
 function loadPosts() {
-  fetch('https://painteddoorknob.onrender.com/api/posts')
-    .then(res => res.json())
+  fetch('https://painteddoorknob.onrender.com/api/posts') // Fetch posts from backend
+    .then(res => res.json()) // Parse the JSON response
     .then(posts => {
       const forumPostsDiv = document.getElementById('forum-posts');
       forumPostsDiv.innerHTML = ''; // Clear existing posts
@@ -61,34 +37,36 @@ function loadPosts() {
     });
 }
 
-// Submit a comment to a post
 function submitComment(event, postId) {
   const commentInput = document.getElementById(`comment-input-${postId}`);
   const comment = commentInput.value;
-  const username = 'User'; // Replace with actual logged-in user name
+  const username = 'Username'; // Replace with actual user info
 
-  if (comment.trim() === '') return;
+  if (!comment.trim()) return;
 
   fetch(`https://painteddoorknob.onrender.com/api/posts/${postId}/comment`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ comment, username })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      comment,
+      username
+    })
   })
-    .then(res => res.json())
-    .then(data => {
-      loadPosts(); // Reload posts to show new comment
-    });
-
-  commentInput.value = ''; // Clear the comment input
+  .then(res => res.json())
+  .then(newComment => {
+    commentInput.value = ''; // Clear input field
+    loadPosts(); // Reload posts with the new comment
+  });
 }
 
-// Like a comment
 function likeComment(postId, commentId) {
   fetch(`https://painteddoorknob.onrender.com/api/posts/${postId}/comment/${commentId}/like`, {
     method: 'POST'
   })
-    .then(res => res.json())
-    .then(data => {
-      loadPosts(); // Reload posts to show updated likes count
-    });
+  .then(res => res.json())
+  .then(updatedComment => {
+    loadPosts(); // Reload posts to reflect the updated like count
+  });
 }
