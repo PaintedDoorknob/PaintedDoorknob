@@ -259,41 +259,18 @@ footer {
 .rounded {
   border-radius: 8px;
 }
-.hero .button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 20px;
-  justify-content: center;
-}
 
-.hero .cta-button {
-  padding: 12px 24px;
-  font-size: 1rem;
-  background-color: #2563eb;
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-}
-
-.hero .cta-button:hover {
-  background-color: #1e40af;
-}
-.post-image {
-  max-width: 100%;
-  border-radius: 10px;
-  margin: 10px 0;
-}
+/* =====================
+   COMMENT SECTION
+====================== */
 .comment-area {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .comment-input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
   background: #1f1f1f;
   color: white;
   border: 1px solid #444;
@@ -303,10 +280,13 @@ footer {
 .submit-comment {
   background: #10b981;
   border: none;
-  padding: 8px 12px;
+  padding: 10px 16px;
   color: white;
   border-radius: 6px;
   cursor: pointer;
+  display: inline-block;
+  margin-top: 8px; /* Ensures space between input and button */
+  width: auto;
 }
 
 .submit-comment:hover {
