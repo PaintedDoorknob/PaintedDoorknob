@@ -285,16 +285,10 @@ footer {
   border-radius: 6px;
   cursor: pointer;
   display: inline-block;
-  margin-top: 8px; /* Ensures space between input and button */
+  margin-top: 8px;
   width: auto;
 }
 
 .submit-comment:hover {
   background: #059669;
-}
-.submit-comment {
-  background-color: red; /* Just for testing visibility */
-  display: inline-block;
-  width: auto;
-  padding: 10px 20px;
 }
