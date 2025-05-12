@@ -3,188 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PaintedDoorKnob - Dashboard</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <script src="js/header.js" defer></script>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #1a1a1a;
-      color: #f1f1f1;
-    }
-
-    .dashboard-container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-
-    .dashboard-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .dashboard-header h1 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 2rem;
-      margin: 0;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 20px;
-      margin-top: 20px;
-      justify-content: center;
-      width: 100%;
-      flex-wrap: wrap;
-    }
-
-    .create-post-btn, .browse-forum-btn {
-      padding: 12px 24px;
-      font-size: 1rem;
-      background-color: #2563eb;
-      color: white;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      text-align: center;
-      text-decoration: none;
-    }
-
-    .create-post-btn:hover, .browse-forum-btn:hover {
-      background-color: #1e40af;
-    }
-
-    .recent-posts {
-      margin-top: 40px;
-    }
-
-    .recent-posts h2 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-
-    .post-card {
-      background-color: #262626;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    }
-
-    .post-card h3 {
-      margin: 0 0 10px 0;
-      font-size: 1.2rem;
-      color: #ffffff;
-    }
-
-    .post-card p {
-      color: #cccccc;
-      font-size: 1rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px 0;
-      background-color: #121212;
-      color: #888;
-      font-size: 0.9rem;
-    }
-  </style>
+  <title>Home - PaintedDoorKnob</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <!-- Header is inserted via header.js -->
+<body class="home-page">
 
-  <main class="dashboard-container">
-    <div class="dashboard-header">
-      <h1>Welcome back, <span id="username-display">User</span>!</h1>
-    </div>
+  <header class="site-header">
+    <div class="logo">PaintedDoorKnob</div>
+    <nav>
+      <a href="forum.html">Forum</a>
+      <a href="settings.html">Settings</a>
+      <a href="index.html" onclick="logout()">Log Out</a>
+    </nav>
+  </header>
 
-    <section class="button-group">
-      <a href="forum.html" class="browse-forum-btn">Browse Forum</a>
-      <a href="post.html" class="create-post-btn">Create a Post</a>
-    </section>
-
-    <section class="recent-posts">
-      <h2>Recent Posts</h2>
-      <div id="posts-container">
-        <!-- Posts will be loaded here dynamically -->
-      </div>
+  <main class="main-content">
+    <section class="welcome">
+      <h1>Welcome back, <span id="username-display"></span>!</h1>
+      <p>Glad to see you again. Head over to the forum or adjust your settings.</p>
     </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 PaintedDoorKnob | Designed by You</p>
-  </footer>
-
   <script>
-  const username = localStorage.getItem('username') || 'User';
-  document.getElementById('username-display').textContent = username;
+    const username = localStorage.getItem("username");
+    document.getElementById("username-display").textContent = username || "User";
 
-  function loadPosts() {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    const container = document.getElementById('posts-container');
-    container.innerHTML = "";
-
-    if (posts.length === 0) {
-      container.innerHTML = "<p>No posts yet. Be the first to post!</p>";
-      return;
+    function logout() {
+      localStorage.removeItem("username");
+      localStorage.removeItem("userLoggedIn");
     }
+  </script>
 
-    posts.slice().reverse().forEach(post => {
-      const postEl = document.createElement('div');
-      postEl.className = 'post-card';
-      postEl.innerHTML = `
-        <h3>${post.title}</h3>
-        <p>${post.content}</p>
-        <small>By ${post.username} on ${new Date(post.createdAt).toLocaleString()}</small>
-      `;
-
-      // Add delete button if it's the user's post
-      if (post.username === username) {
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.style.cssText = `
-          margin-top: 10px;
-          background-color: #dc2626;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 6px;
-          cursor: pointer;
-        `;
-        deleteBtn.onclick = () => {
-          if (confirm('Are you sure you want to delete this post?')) {
-            deletePost(post.id);
-          }
-        };
-        postEl.appendChild(deleteBtn);
-      }
-
-      container.appendChild(postEl);
-    });
-  }
-
-  function deletePost(id) {
-    let posts = JSON.parse(localStorage.getItem('posts')) || [];
-    posts = posts.filter(post => post.id !== id);
-    localStorage.setItem('posts', JSON.stringify(posts));
-    loadPosts();
-  }
-
-  // Load posts on page load
-  loadPosts();
-</script>
 </body>
 </html>
