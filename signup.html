@@ -1,52 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up | PaintedDoorKnob</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/auth.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - PaintedDoorKnob</title>
+  <link rel="stylesheet" href="public/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <nav>
-      <div class="logo">
-        <img src="assets/logo.png" alt="Logo">
-      </div>
-      <ul>
+    <nav class="nav-container">
+      <div class="logo">PaintedDoorKnob</div>
+      <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="signup.html">Sign Up</a></li>
-        <li><a href="login.html">Log In</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="chatbot.html">Chatbot</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="login.html" class="login-btn">Login</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
-    <section class="signup-form">
-      <h2>Create an Account</h2>
-      <form id="signupForm">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" required placeholder="Enter your full name">
+  <section class="form-container">
+    <div class="form-box">
+      <h2>Create Your Account</h2>
+      <form action="/signup" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
 
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="Enter your email">
+        <input type="email" id="email" name="email" required />
 
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password">
-
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+        <input type="password" id="password" name="password" required />
 
         <button type="submit" class="cta-button">Sign Up</button>
       </form>
-      <p>Already have an account? <a href="login.html">Log in</a></p>
-    </section>
-  </main>
+      <p class="alt-option">Already have an account? <a href="login.html">Login here</a>.</p>
+    </div>
+  </section>
 
   <footer>
-    <p>&copy; 2025 PaintedDoorKnob | Designed by You</p>
+    <p>&copy; 2025 PaintedDoorKnob. All rights reserved.</p>
   </footer>
 </body>
 </html>
