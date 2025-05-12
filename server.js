@@ -1,12 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');  // Add this to resolve file paths
+const path = require('path');  // To resolve file paths
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));  // Serve static files from 'public' folder
 
 // MongoDB setup
 mongoose.connect('mongodb://127.0.0.1:27017/painteddoorknob', {
@@ -14,25 +10,28 @@ mongoose.connect('mongodb://127.0.0.1:27017/painteddoorknob', {
   useUnifiedTopology: true,
 });
 
-// Serve HTML files from routes (outside public)
+// Serve HTML pages using routes (not from the public folder)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));  // Serve index.html when visiting the root URL
+  res.sendFile(path.join(__dirname, 'index.html'));  // Serve index.html for homepage
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));  // Serve login.html
+  res.sendFile(path.join(__dirname, 'login.html'));  // Serve login.html for login page
 });
 
 app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, 'signup.html'));  // Serve signup.html
+  res.sendFile(path.join(__dirname, 'signup.html'));  // Serve signup.html for signup page
 });
 
-// Other routes for serving files
+// Other routes for your app
 app.get('/home', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home.html'));  // Serve home.html for logged-in users
+  res.sendFile(path.join(__dirname, 'home.html'));  // Serve home.html after login
 });
 
-// Post schema
+// Static assets (CSS, JS) served from the 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Post schema (for storing posts in MongoDB)
 const postSchema = new mongoose.Schema({
   title: String,
   content: String,
@@ -42,7 +41,7 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
-// Public API: anyone can view posts
+// API for fetching posts
 app.get('/api/posts', async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
