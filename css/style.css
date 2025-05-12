@@ -289,3 +289,17 @@ footer {
 .form-link a {
   color: #3fb0ff;
 }
+/* Header Nav Buttons */
+nav ul li .nav-btn {
+  background-color: #2b9cd8;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  font-weight: 600;
+}
+
+nav ul li .nav-btn:hover {
+  background-color: #178acb;
+}
