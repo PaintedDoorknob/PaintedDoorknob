@@ -1,26 +1,35 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const session = require('express-session');
-const path = require('path');
-
+const path = require('path');  // Add this to resolve file paths
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // For form data
-app.use(express.static('public'));
-
-// Session middleware
-app.use(session({
-  secret: 'painteddoorknob-secret',
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(express.static(path.join(__dirname, 'public')));  // Serve static files from 'public' folder
 
 // MongoDB setup
 mongoose.connect('mongodb://127.0.0.1:27017/painteddoorknob', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+});
+
+// Serve HTML files from routes (outside public)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));  // Serve index.html when visiting the root URL
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));  // Serve login.html
+});
+
+app.get('/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, 'signup.html'));  // Serve signup.html
+});
+
+// Other routes for serving files
+app.get('/home', (req, res) => {
+  res.sendFile(path.join(__dirname, 'home.html'));  // Serve home.html for logged-in users
 });
 
 // Post schema
@@ -33,7 +42,7 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
-// --- Public API ---
+// Public API: anyone can view posts
 app.get('/api/posts', async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
@@ -43,36 +52,4 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
-// --- Serve HTML pages ---
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
-});
-
-app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/signup.html'));
-});
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/login.html'));
-});
-
-app.get('/home', (req, res) => {
-  // You could check if the user is logged in here later
-  res.sendFile(path.join(__dirname, 'public/home.html'));
-});
-
-// --- Simple fake login logic ---
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // TEMP: Replace this with real auth later
-  if (username && password) {
-    req.session.username = username;
-    res.redirect('/home'); // redirect to logged-in homepage
-  } else {
-    res.status(401).send('Login failed. Please check credentials.');
-  }
-});
-
-// --- Run the server ---
-app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
