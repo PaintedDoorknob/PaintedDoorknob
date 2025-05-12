@@ -303,3 +303,17 @@ nav ul li .nav-btn {
 nav ul li .nav-btn:hover {
   background-color: #178acb;
 }
+/* Fix for header nav buttons to match your clean design */
+nav ul li .nav-btn {
+  background-color: #2b9cd8;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+nav ul li .nav-btn:hover {
+  background-color: #178acb;
+}
