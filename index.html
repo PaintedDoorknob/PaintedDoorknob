@@ -3,45 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PaintedDoorKnob</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>PaintedDoorKnob – Home</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-
-  <header>
-    <a href="index.html" class="logo">PaintedDoorKnob</a>
-    <nav>
-      <ul>
-        <li><a href="login.html" class="nav-btn header-btn">Log In</a></li>
-        <li><a href="signup.html" class="nav-btn header-btn">Sign Up</a></li>
-      </ul>
-    </nav>
+  <header class="nav">
+    <div class="container">
+      <h1 class="logo">PaintedDoorKnob</h1>
+      <nav class="nav-links">
+        <a href="login.html" class="btn btn-outline">Log In</a>
+        <a href="signup.html" class="btn btn-filled">Sign Up</a>
+      </nav>
+    </div>
   </header>
 
   <section class="hero">
-    <h1>Welcome to PaintedDoorKnob</h1>
-    <p>A premium community platform where polished design meets real interaction.</p>
-    <a href="signup.html" class="cta-button">Join the Community</a>
+    <div class="container">
+      <h2>Welcome to PaintedDoorKnob</h2>
+      <p>A premium community platform where polished design meets real interaction.</p>
+      <a href="signup.html" class="btn btn-filled large">Join the Community</a>
+    </div>
   </section>
 
   <section class="features">
-    <div class="feature">
-      <h3>⚡ Lightning-Fast</h3>
-      <p>Our clean and modern design ensures blazing speed across all devices.</p>
-    </div>
-    <div class="feature">
-      <h3>🎨 Designed to Impress</h3>
-      <p>Styled with a refined dark theme, sharp edges, and elegant hover effects.</p>
-    </div>
-    <div class="feature">
-      <h3>🔐 Safe & Secure</h3>
-      <p>Built with the future in mind — secure user management from day one.</p>
+    <div class="container grid">
+      <div class="feature-card">
+        <h3> Lightning-Fast</h3>
+        <p>Clean code and modern design deliver blazing speed on every device.</p>
+      </div>
+      <div class="feature-card">
+        <h3> Designed to Impress</h3>
+        <p>Refined dark theme, smooth edges, and satisfying hover effects.</p>
+      </div>
+      <div class="feature-card">
+        <h3> Safe & Secure</h3>
+        <p>Built with the future in mind — security and trust from day one.</p>
+      </div>
     </div>
   </section>
 
-  <footer>
-    &copy; 2025 PaintedDoorKnob. All rights reserved.
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 PaintedDoorKnob. All rights reserved.</p>
+    </div>
   </footer>
-
 </body>
 </html>
