@@ -25,12 +25,20 @@
   </main>
 
   <script>
-    const username = localStorage.getItem("username");
-    document.getElementById("username-display").textContent = username || "User";
+    // Redirect to index.html if not logged in
+    const userLoggedIn = localStorage.getItem('userLoggedIn');
+    if (!userLoggedIn) {
+      window.location.href = 'index.html';
+    }
 
+    // Show username
+    const username = localStorage.getItem('username');
+    document.getElementById('username-display').textContent = username || "User";
+
+    // Logout function clears localStorage and lets user leave page normally
     function logout() {
-      localStorage.removeItem("username");
-      localStorage.removeItem("userLoggedIn");
+      localStorage.removeItem('username');
+      localStorage.removeItem('userLoggedIn');
     }
   </script>
 
