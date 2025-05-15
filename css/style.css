@@ -488,3 +488,41 @@ body {
 .auth-container a:hover {
   text-decoration: underline;
 }
+/* Animation: fade in from bottom */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation delay for staggered effect */
+.fade-delay-1 {
+  animation-delay: 0.2s;
+}
+.fade-delay-2 {
+  animation-delay: 0.4s;
+}
+.fade-delay-3 {
+  animation-delay: 0.6s;
+}
+
+/* Hover lift effect for feature boxes */
+.feature-box {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 20px;
+  background: #2a2a2a;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.feature-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 123, 255, 0.2);
+}
