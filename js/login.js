@@ -1,29 +1,17 @@
-// js/login.js
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
+document.getElementById('loginForm').addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const username = e.target.username.value.trim();
-  const password = e.target.password.value;
+  const usernameInput = e.target.username.value.trim();
+  const passwordInput = e.target.password.value;
 
-  try {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
+  const storedUsername = localStorage.getItem('username');
+  const storedPassword = localStorage.getItem('password');
 
-    const data = await res.json();
-
-    if (res.ok) {
-      // Optionally store the user info or token
-      localStorage.setItem('username', data.username);
-      // Redirect to logged-in homepage
-      window.location.href = 'home.html';
-    } else {
-      alert(data.message || 'Login failed');
-    }
-  } catch (err) {
-    console.error('Login error:', err);
-    alert('Something went wrong. Try again.');
+  if (usernameInput === storedUsername && passwordInput === storedPassword) {
+    localStorage.setItem('userLoggedIn', 'true');
+    localStorage.setItem('username', storedUsername); // refresh just in case
+    window.location.href = 'home.html';
+  } else {
+    alert('Incorrect username or password.');
   }
 });
