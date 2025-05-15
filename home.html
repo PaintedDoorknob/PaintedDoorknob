@@ -2,9 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Home - PaintedDoorKnob</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Minimal improvements to your home page layout */
+
+    body.home-page {
+      background-color: #121212;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      background-color: #1e1e1e;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+    }
+
+    .site-header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #61dafb;
+      user-select: none;
+    }
+
+    nav a {
+      color: #61dafb;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #21a1f1;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .welcome h1 {
+      font-size: 2.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .welcome p {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-top: 0;
+    }
+
+    /* Reduce extra vertical space */
+    @media (min-width: 600px) {
+      .main-content {
+        padding: 4rem 2rem;
+      }
+    }
+  </style>
 </head>
 <body class="home-page">
 
@@ -25,7 +96,7 @@
   </main>
 
   <script>
-    // Redirect to index.html if not logged in
+    // Redirect if not logged in
     const userLoggedIn = localStorage.getItem('userLoggedIn');
     if (!userLoggedIn) {
       window.location.href = 'index.html';
@@ -35,7 +106,6 @@
     const username = localStorage.getItem('username');
     document.getElementById('username-display').textContent = username || "User";
 
-    // Logout function clears localStorage and lets user leave page normally
     function logout() {
       localStorage.removeItem('username');
       localStorage.removeItem('userLoggedIn');
