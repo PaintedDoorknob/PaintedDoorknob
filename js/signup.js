@@ -1,21 +1,32 @@
-document.getElementById('signupForm').addEventListener('submit', async (e) => {
+document.getElementById('signupForm').addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const message = document.getElementById('message');
+  const username = e.target.username.value.trim();
+  const password = e.target.password.value;
+  const confirmPassword = e.target.confirmPassword.value;
 
-  const response = await fetch('/api/signup', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ username, password })
-  });
-
-  const result = await response.json();
-  if (result.success) {
-    window.location.href = 'home.html';
-  } else {
-    message.textContent = result.message;
+  if (password !== confirmPassword) {
+    alert('Passwords do not match.');
+    return;
   }
-});
 
+  if (username.length < 3) {
+    alert('Username must be at least 3 characters.');
+    return;
+  }
+
+  if (password.length < 6) {
+    alert('Password must be at least 6 characters.');
+    return;
+  }
+
+  // Save to localStorage
+  localStorage.setItem('username', username);
+  localStorage.setItem('password', password);
+  localStorage.setItem('userLoggedIn', 'true');
+
+  alert('Sign up successful!');
+
+  // Redirect to logged-in homepage
+  window.location.href = 'home.html';
+});
