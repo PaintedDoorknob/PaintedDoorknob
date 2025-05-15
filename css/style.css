@@ -299,3 +299,83 @@ footer,
   height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.form-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #0f0f0f;
+  min-height: 100vh;
+}
+
+.form-card {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  color: white;
+}
+
+.form-card h2 {
+  margin-bottom: 24px;
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #ccc;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #121212;
+  color: #fff;
+  font-size: 16px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4ea1f3;
+  background-color: #1f1f1f;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background-color: #4ea1f3;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #3784d8;
+}
+
+.form-footer {
+  margin-top: 16px;
+  font-size: 14px;
+  text-align: center;
+  color: #aaa;
+}
+
+.form-footer a {
+  color: #4ea1f3;
+  text-decoration: none;
+}
