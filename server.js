@@ -1,34 +1,41 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const app = express();
-const PORT = 3000;
+const path = require('path');
 
-app.use(express.static('.'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-const USERS_FILE = path.join(__dirname, 'users.json');
+const PORT = 3000;
 
-// Signup endpoint
+// TEMP user storage (in-memory)
+const users = [];
+
+// SIGN UP
 app.post('/api/signup', (req, res) => {
   const { username, password } = req.body;
 
-  if (!username || !password) {
-    return res.json({ success: false, message: 'Both fields required.' });
-  }
-
-  let users = [];
-  if (fs.existsSync(USERS_FILE)) {
-    users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
-  }
-
-  if (users.find(u => u.username === username)) {
-    return res.json({ success: false, message: 'Username already exists.' });
+  const userExists = users.find(user => user.username === username);
+  if (userExists) {
+    return res.status(409).json({ message: 'Username already taken' });
   }
 
   users.push({ username, password });
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-  res.json({ success: true });
+  res.status(201).json({ message: 'Account created', username });
+});
+
+// LOGIN
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(
+    u => u.username === username && u.password === password
+  );
+
+  if (!user) {
+    return res.status(401).json({ message: 'Wrong username or password' });
+  }
+
+  res.status(200).json({ message: 'Login successful', username });
 });
 
 app.listen(PORT, () => {
