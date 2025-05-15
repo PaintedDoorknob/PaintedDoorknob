@@ -1,54 +1,36 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');  // To resolve file paths
+const fs = require('fs');
+const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-// MongoDB setup
-mongoose.connect('mongodb://127.0.0.1:27017/painteddoorknob', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+app.use(express.static('.'));
+app.use(express.json());
 
-// Serve HTML pages using routes (not from the public folder)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));  // Serve index.html for homepage
-});
+const USERS_FILE = path.join(__dirname, 'users.json');
 
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));  // Serve login.html for login page
-});
+// Signup endpoint
+app.post('/api/signup', (req, res) => {
+  const { username, password } = req.body;
 
-app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, 'signup.html'));  // Serve signup.html for signup page
-});
-
-// Other routes for your app
-app.get('/home', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home.html'));  // Serve home.html after login
-});
-
-// Static assets (CSS, JS) served from the 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Post schema (for storing posts in MongoDB)
-const postSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  username: String,
-  createdAt: { type: Date, default: Date.now },
-});
-
-const Post = mongoose.model('Post', postSchema);
-
-// API for fetching posts
-app.get('/api/posts', async (req, res) => {
-  try {
-    const posts = await Post.find().sort({ createdAt: -1 });
-    res.json(posts);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to load posts' });
+  if (!username || !password) {
+    return res.json({ success: false, message: 'Both fields required.' });
   }
+
+  let users = [];
+  if (fs.existsSync(USERS_FILE)) {
+    users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+  }
+
+  if (users.find(u => u.username === username)) {
+    return res.json({ success: false, message: 'Username already exists.' });
+  }
+
+  users.push({ username, password });
+  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+  res.json({ success: true });
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
