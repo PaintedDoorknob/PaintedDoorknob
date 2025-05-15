@@ -6,109 +6,133 @@
   <title>Sign Up - PaintedDoorKnob</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Simple clean signup form styling */
+    /* Basic sign up form style to match login page vibe */
     body {
-      font-family: Arial, sans-serif;
-      background: #121212;
+      background-color: #121212;
       color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
-    form {
-      background: #1e1e1e;
-      padding: 2rem;
+
+    .signup-container {
+      background-color: #1e1e1e;
+      padding: 2.5rem 3rem;
       border-radius: 8px;
-      width: 300px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.8);
-    }
-    h2 {
-      margin-bottom: 1rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+      width: 100%;
+      max-width: 400px;
       text-align: center;
+    }
+
+    .signup-container h2 {
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      font-size: 2rem;
       color: #61dafb;
     }
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-      margin-top: 1rem;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
     }
+
     input[type="text"],
+    input[type="email"],
     input[type="password"] {
-      width: 100%;
-      padding: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
       border: none;
-      border-radius: 4px;
-      margin-bottom: 0.5rem;
-      background: #333;
+      font-size: 1rem;
+      outline: none;
+      background-color: #2c2c2c;
       color: #eee;
+      transition: background-color 0.3s ease;
     }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      background-color: #3a3a3a;
+    }
+
     button {
-      width: 100%;
-      padding: 0.7rem;
-      background: #61dafb;
+      padding: 0.75rem 1rem;
+      background-color: #61dafb;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       color: #121212;
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 1.1rem;
       cursor: pointer;
-      margin-top: 1rem;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
     }
+
     button:hover {
-      background: #21a1f1;
+      background-color: #21a1f1;
     }
-    .error {
-      color: #ff5555;
+
+    .redirect {
+      margin-top: 1rem;
       font-size: 0.9rem;
-      margin-top: 0.5rem;
-      text-align: center;
+      color: #aaa;
+    }
+
+    .redirect a {
+      color: #61dafb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .redirect a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <form id="signup-form">
+  <div class="signup-container">
     <h2>Create Your Account</h2>
-
-    <label for="username">Username</label>
-    <input type="text" id="username" required autocomplete="off" />
-
-    <label for="password">Password</label>
-    <input type="password" id="password" required />
-
-    <button type="submit">Sign Up</button>
-
-    <div class="error" id="error-message"></div>
-  </form>
+    <form id="signup-form">
+      <input type="text" id="username" name="username" placeholder="Username" required />
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="password" id="password" name="password" placeholder="Password" required minlength="6" />
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="redirect">
+      Already have an account? <a href="index.html">Log In</a>
+    </div>
+  </div>
 
   <script>
-    const form = document.getElementById('signup-form');
-    const errorMessage = document.getElementById('error-message');
-
-    form.addEventListener('submit', function(e) {
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
+      const username = e.target.username.value.trim();
+      const email = e.target.email.value.trim();
+      const password = e.target.password.value;
 
-      // Simple validation
-      if (username.length < 3) {
-        errorMessage.textContent = "Username must be at least 3 characters.";
+      // Simple validation example
+      if (!username || !email || !password) {
+        alert('Please fill in all fields');
         return;
       }
+
       if (password.length < 6) {
-        errorMessage.textContent = "Password must be at least 6 characters.";
+        alert('Password must be at least 6 characters');
         return;
       }
 
-      // For demo: Save username & password in localStorage (NOT secure for real apps!)
-      // In a real app, send this info to backend for real account creation.
+      // Save to localStorage (replace with backend API when ready)
       localStorage.setItem('username', username);
+      localStorage.setItem('email', email);
       localStorage.setItem('userLoggedIn', 'true');
 
-      // Redirect to logged-in homepage
+      // Redirect to logged in homepage
       window.location.href = 'home.html';
     });
   </script>
